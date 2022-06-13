@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "864638554989",
+    "project_id": "rucksack-7bf7e",
+    "storage_bucket": "rucksack-7bf7e.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:864638554989:android:c15c185160801dc3074064",
+        "android_client_info": {
+          "package_name": "com.jithinprem.rucksack"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "864638554989-nfh1sod3iena5475b5kpffd4ke578an9.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyC9vZ1QQ-yfcGu6jVp5Uh72BDjpqoB9zh4"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "864638554989-nfh1sod3iena5475b5kpffd4ke578an9.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
