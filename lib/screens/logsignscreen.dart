@@ -98,7 +98,7 @@ class _LogSignScreenState extends State<LogSignScreen> {
                       onPressed: () async {
                         var email = nameController.text;
                         var pass = passwordController.text;
-                        print(email + " " + pass);
+                        //print(email + " " + pass);
                         if (email.contains('tkmce.ac.in')) {
                           final newUser =
                               await _auth.createUserWithEmailAndPassword(
