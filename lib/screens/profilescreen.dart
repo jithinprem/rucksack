@@ -1,6 +1,7 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:rucksack/screens/additem.dart';
+import 'package:rucksack/screens/homescreen.dart';
 import 'package:rucksack/screens/logSignScreen.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 
@@ -45,13 +46,22 @@ class _ProfileState extends State<Profile> {
                 'the products in your sellcart', Icons.monitor_heart, printhello()),
             ProfilePagetile('ADD ITEM',
                 'start earning 💸', Icons.comment, (){Navigator.pushNamed(context, AddItem.id);}),
-            ElevatedButton(onPressed: ()async{
-              await _auth.signOut();
-              Navigator.pushNamed(context, LogSignScreen.id);
-              }
-              , child: Text('Log out')),
-
-
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceAround,
+              children: <Widget>[
+                ElevatedButton(onPressed: ()async{
+                  await _auth.signOut();
+                  Navigator.pushNamed(context, LogSignScreen.id);
+                }
+                  , child: Text('Log out'),
+                ),
+                ElevatedButton(onPressed: ()async{
+                  Navigator.pushNamed(context, HomeScreen.id);
+                }
+                  , child: Text('Goback'),
+                ),
+              ],
+            )
           ],
         ),
       ),

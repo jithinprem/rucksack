@@ -13,7 +13,6 @@ class HomeItemTile extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      padding: EdgeInsets.all(10),
       width: double.infinity,
       child:  Card(
         child: InkWell(
