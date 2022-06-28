@@ -40,6 +40,8 @@ dependencies:
   firebase_core : ^1.10.2
   toast: ^0.3.0
   modal_progress_hud_nsn: ^0.2.1
+  image_picker: ^0.8.5+3
+  firebase_storage: ^10.2.18
 
 
 dev_dependencies:

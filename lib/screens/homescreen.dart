@@ -10,7 +10,7 @@ class HomeScreen extends StatefulWidget {
   }
   getCall() async{
     await Future.delayed(const Duration(seconds: 4), (){});
-    print('we are here');
+    print('we are hIre');
     await RetList().makedata();
   }
 

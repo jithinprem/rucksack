@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:image_picker/image_picker.dart';
 import 'package:rucksack/screens/profilescreen.dart';
+import 'dart:io';
 
 
 
@@ -20,6 +22,12 @@ class _AddItemState extends State<AddItem> {
   _AddItemState(){
     print('hai');
     getUser(useremailid);
+  }
+
+  File _image;
+
+  void getImage() async{
+
   }
 
   FirebaseFirestore _firestore = FirebaseFirestore.instance;
