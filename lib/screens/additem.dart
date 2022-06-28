@@ -86,7 +86,7 @@ class _AddItemState extends State<AddItem> {
                   maxLines: 5,
                   controller: nameController,
                   decoration: InputDecoration(
-                    hintText: 'Item Name',
+                    hintText: 'Item  Name',
                     border: OutlineInputBorder(),
                   ),
 
