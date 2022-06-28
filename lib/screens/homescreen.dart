@@ -5,11 +5,12 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 
 class HomeScreen extends StatefulWidget {
   static String id = 'homescreen';
-  // RetList r1 = new RetList();
   HomeScreen(){
     getCall();
   }
   getCall() async{
+    await Future.delayed(const Duration(seconds: 4), (){});
+    print('we are here');
     await RetList().makedata();
   }
 
@@ -19,20 +20,8 @@ class HomeScreen extends StatefulWidget {
 }
 
 class _HomeScreenState extends State<HomeScreen> {
-  // final _firestore = FirebaseFirestore.instance;
-  // List details_item = [];
-  // var x;
-  //
-  // Future getData(details_item) async{
-  //   final items = await _firestore.collection('allitems').limit(2).get().then((QuerySnapshot querySnapshot) {
-  //     querySnapshot.docs.forEach((doc) {
-  //       var details = {'it_description': doc['description'],'it_id': doc['id'], 'it_name': doc['name'], 'it_price': doc['price'], 'it_tags': doc['tags']};
-  //       details_item.add(details);
-  //       //print(details);
-  //     });
-  //   });
-  // }
-
+  
+  
   List details_item = [];
 
   @override
@@ -105,20 +94,18 @@ class RetList {
   Future<List<Widget>> makedata() async{
 
     List<Widget> list = [];
-    this.det_item = [];
+
     await getData();
-    print('this is where we req');
+    print('this is where we rq');
     print(this.det_item);
+    mylist = [];
     for (int i = 0; i < this.det_item.length; i++) {
-      //var p = details_item.length;
-      //print('the length is the : $p');
-      mylist = [];
       mylist.add(
-        HomeItemTile(this.det_item[i]['it_name'], '1992 spring model', '', '',
-            'model12A% 1991 watch for sale', Icons.watch),
+        HomeItemTile(this.det_item[i]['it_name'], this.det_item[i]['it_description'], '', '',
+            this.det_item[i]['it_price'], Icons.watch),
       ); //add any Widget in place of Text("Index $i")
     }
-    //print(list);
+
     return mylist; // all widget added now retrun the list here
   }
 }
