@@ -4,14 +4,14 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:rucksack/screens/profilescreen.dart';
 import 'dart:io';
+import 'imageupload/imgupload.dart';
 
-
+var useremail = 'uye';
 
 class AddItem extends StatefulWidget {
   static String id = 'additem';
 
   AddItem();
-
 
   @override
   State<AddItem> createState() => _AddItemState();
@@ -20,28 +20,28 @@ class AddItem extends StatefulWidget {
 class _AddItemState extends State<AddItem> {
 
   _AddItemState(){
-    print('hai');
-    getUser(useremailid);
+    getUser();
   }
 
-  File _image;
-
-  void getImage() async{
-
+  Future getUser() async {
+    User currUser;
+    FirebaseAuth _auth = FirebaseAuth.instance;
+    currUser =  await _auth.currentUser!;
+    useremail = currUser.email!;
+    print(useremail);
+    setState((){
+      useremail;
+    });
+    return currUser;
+  }
+  void selectAndUpload(){
+    UpImg().select();
+    UpImg().upload();
   }
 
   FirebaseFirestore _firestore = FirebaseFirestore.instance;
-  var useremailid = 'whatever';
 
-  Future getUser(useremail) async {
-    User currUser;
-    final _auth = FirebaseAuth.instance;
-    currUser =  await _auth.currentUser!;
-    useremail = currUser.email!;
-    print(useremailid);
-    return currUser;
 
-  }
 
   TextEditingController nameController = TextEditingController();
   TextEditingController descController = TextEditingController();
@@ -58,7 +58,7 @@ class _AddItemState extends State<AddItem> {
         print('uploading is being performed......................');
         await _firestore.collection('allitems').add({
           'description': descitem,
-          'id': useremailid,
+          'id': useremail,
           'name': itemname,
           'price': priceitem,
           'tags': tags,
@@ -78,48 +78,17 @@ class _AddItemState extends State<AddItem> {
             child: Column(
               children: <Widget>[
                 ListTile(
-                  title: Text(useremailid),
+                  title: Text(useremail),
                   tileColor: Colors.black54,
                 ),
-                TextField(
-                  minLines: 1,
-                  maxLines: 5,
-                  controller: nameController,
-                  decoration: InputDecoration(
-                    hintText: 'Item  Name',
-                    border: OutlineInputBorder(),
-                  ),
-
-                ),
-                TextField(
-                  minLines: 3,
-                  maxLines: 5,
-                  controller: descController,
-                  decoration: InputDecoration(
-                    hintText: 'description',
-                    border: OutlineInputBorder(),
-                  ),
-                ),
-                TextField(
-                  controller: priceController,
-                  decoration: InputDecoration(
-                    hintText: 'price',
-                    border: OutlineInputBorder(),
-                  ),
-                ),
-                TextField(
-                  minLines: 3,
-                  maxLines: 5,
-                  controller: tagsController,
-                  decoration: InputDecoration(
-                    hintText: 'tags',
-                    border: OutlineInputBorder(),
-                  ),
-                ),
+                TextF(nameController: nameController,stri: 'Item Name', minlin: 1,maxlin: 5),
+                TextF(nameController: descController,stri: 'Description', minlin: 3,maxlin: 5),
+                TextF(nameController: nameController,stri: 'Price', minlin: 1,maxlin: 5),
+                TextF(nameController: nameController,stri: 'Tags', minlin: 1,maxlin: 5),
                 Row(
                   mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                   children: <Widget>[
-                    ElevatedButton(onPressed: (){UploadItem();}, child: Text('Photo'),),
+                    ElevatedButton(onPressed: (){selectAndUpload();}, child: Text('Photo'),),
                     ElevatedButton(onPressed: (){UploadItem();}, child: Text('Add'),),
                   ],
                 ),
@@ -129,6 +98,35 @@ class _AddItemState extends State<AddItem> {
           ),
         ),
       ),
+    );
+  }
+}
+
+class TextF extends StatelessWidget {
+  TextF({
+    Key? key,
+    required this.nameController,
+    this.stri = '',
+    this.minlin,
+    this.maxlin,
+  }) : super(key: key);
+
+  final TextEditingController nameController;
+  String stri;
+  var minlin, maxlin;
+
+
+  @override
+  Widget build(BuildContext context) {
+    return TextField(
+      minLines: minlin,
+      maxLines: maxlin,
+      controller: nameController,
+      decoration: InputDecoration(
+        hintText: stri,
+        border: OutlineInputBorder(),
+      ),
+
     );
   }
 }

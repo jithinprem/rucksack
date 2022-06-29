@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:rucksack/screens/emailverify.dart';
 import 'package:rucksack/screens/homescreen.dart';
+import 'package:rucksack/screens/imageupload/imgupload.dart';
 import 'package:rucksack/screens/logSignScreen.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
@@ -27,9 +28,10 @@ class _MyAppState extends State<MyApp> {
       theme: ThemeData.dark().copyWith(
         scaffoldBackgroundColor: Colors.grey[900],
       ),
-      initialRoute: LogSignScreen.id,
+      initialRoute: AddItem.id,
 
       routes: {
+        UpImg.id : (context) => UpImg(),
         AddItem.id : (context) => AddItem(),
         HomeScreen.id : (context) => HomeScreen(),
         LogSignScreen.id : (context) => LogSignScreen(),
