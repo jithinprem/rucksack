@@ -1,3 +1,4 @@
+import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
@@ -5,6 +6,7 @@ import 'package:image_picker/image_picker.dart';
 import 'package:rucksack/screens/profilescreen.dart';
 import 'dart:io';
 import 'imageupload/imgupload.dart';
+//import 'package:rucksack/functions/upImage.dart';
 
 var useremail = 'uye';
 
@@ -23,6 +25,30 @@ class _AddItemState extends State<AddItem> {
     getUser();
   }
 
+  final storageRef = FirebaseStorage.instance.ref();
+  XFile? image = XFile('');
+  var imgWidget = NetworkImage('https://www.dreamstime.com/no-image-available-icon-photo-camera-flat-vector-illustration-image132483141');
+
+
+  void select() async {
+    final ImagePicker _picker = ImagePicker();
+    image = await _picker.pickImage(source: ImageSource.gallery);
+  }
+
+  Future<String> upload() async {
+    final mountainsRef = storageRef.child('/items/'+DateTime.now().toString()+'.jpg');
+    File myFile = File(image!.path);
+    try {
+      await mountainsRef.putFile(myFile);
+    } catch (e) {
+      print(e);
+    }
+    final String dfileUrl = await mountainsRef.getDownloadURL();
+    print('this is the download url');
+    print(dfileUrl);
+    return dfileUrl;
+  }
+
   Future getUser() async {
     User currUser;
     FirebaseAuth _auth = FirebaseAuth.instance;
@@ -34,9 +60,19 @@ class _AddItemState extends State<AddItem> {
     });
     return currUser;
   }
+
   void selectAndUpload(){
-    UpImg().select();
-    UpImg().upload();
+      select();
+      print('select is complete');
+      var retstr = upload();
+      print('upload is complete');
+      updateIconstoImg(retstr);
+  }
+
+  updateIconstoImg(url){
+    setState((){
+        imgWidget = NetworkImage(url);
+    });
   }
 
   FirebaseFirestore _firestore = FirebaseFirestore.instance;
@@ -70,29 +106,78 @@ class _AddItemState extends State<AddItem> {
 
   @override
   Widget build(BuildContext context) {
+
     return MaterialApp(
       theme: ThemeData.dark(),
       home: SafeArea(
         child: Scaffold(
+          resizeToAvoidBottomInset: false,
           body: Container(
             child: Column(
+              mainAxisAlignment: MainAxisAlignment.start,
               children: <Widget>[
                 ListTile(
                   title: Text(useremail),
                   tileColor: Colors.black54,
                 ),
-                TextF(nameController: nameController,stri: 'Item Name', minlin: 1,maxlin: 5),
-                TextF(nameController: descController,stri: 'Description', minlin: 3,maxlin: 5),
-                TextF(nameController: nameController,stri: 'Price', minlin: 1,maxlin: 5),
-                TextF(nameController: nameController,stri: 'Tags', minlin: 1,maxlin: 5),
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                  children: <Widget>[
-                    ElevatedButton(onPressed: (){selectAndUpload();}, child: Text('Photo'),),
-                    ElevatedButton(onPressed: (){UploadItem();}, child: Text('Add'),),
-                  ],
+                Expanded(
+                  flex: 2,
+                  child: ListView(
+                    children: <Widget>[
+                      Column(
+                        children: <Widget>[
+                          TextF(nameController: nameController,stri: 'Item Name', minlin: 1,maxlin: 5),
+                          TextF(nameController: descController,stri: 'Description', minlin: 3,maxlin: 5),
+                          TextF(nameController: priceController,stri: 'Price', minlin: 1,maxlin: 5),
+                          TextF(nameController: tagsController,stri: 'Tags in', minlin: 1,maxlin: 5),
+                        ],
+                      ),
+                    ],
+                  ),
                 ),
-
+                Expanded(
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceAround,
+                    children: <Widget>[
+                      FlatButton(
+                        child: Container(
+                          height: 80,
+                          width: 80,
+                          decoration: BoxDecoration(
+                              color: Colors.black,
+                              image: DecorationImage(image: imgWidget,
+                                  fit: BoxFit.cover)
+                          ),
+                        ),
+                        onPressed: (){
+                          //upload the image
+                          selectAndUpload();
+                        },
+                      ),
+                      Container(
+                        height: 80,
+                        width: 80,
+                        child: Icon(Icons.add),
+                        color: Colors.black,
+                      ),
+                      Container(
+                        height:80,
+                        width: 80,
+                        child: Icon(Icons.add),
+                        color: Colors.black,
+                      ),
+                    ],
+                  ),
+                ),
+                Expanded(
+                    child:  Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                      children: <Widget>[
+                        ElevatedButton(onPressed: (){selectAndUpload();}, child: Text('Photo'),),
+                        ElevatedButton(onPressed: (){UploadItem();}, child: Text('Add'),),
+                      ],
+                    ),
+                ),
               ],
             ),
           ),

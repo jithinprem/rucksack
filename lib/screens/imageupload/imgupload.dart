@@ -14,25 +14,6 @@ class UpImg extends StatefulWidget {
 
 class _UpImgState extends State<UpImg> {
 
-  @override
-  Widget build(BuildContext context) {
-    return MaterialApp(
-      home: SafeArea(
-        child: Scaffold(
-          body: Column(
-            children: <Widget>[
-              ElevatedButton(onPressed: QuickImgUp().select, child: Text('selectfile')),
-              ElevatedButton(onPressed: upload, child: Text('upload')),
-            ],
-          ),
-        ),
-      ),
-    );
-  }
-}
-
-class QuickImgUp{
-
   final storageRef = FirebaseStorage.instance.ref();
   late final XFile? image;
 
@@ -54,5 +35,19 @@ class QuickImgUp{
     print(dfileUrl);
   }
 
-
+  @override
+  Widget build(BuildContext context) {
+    return MaterialApp(
+      home: SafeArea(
+        child: Scaffold(
+          body: Column(
+            children: <Widget>[
+              ElevatedButton(onPressed: select, child: Text('selectfile')),
+              ElevatedButton(onPressed: upload, child: Text('upload')),
+            ],
+          ),
+        ),
+      ),
+    );
+  }
 }
