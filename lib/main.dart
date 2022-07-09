@@ -1,10 +1,15 @@
 import 'package:flutter/material.dart';
+import 'package:rucksack/screens/detscreen/profiledet.dart';
 import 'package:rucksack/screens/emailverify.dart';
 import 'package:rucksack/screens/homescreen.dart';
 import 'package:rucksack/screens/imageupload/imgupload.dart';
 import 'package:rucksack/screens/logSignScreen.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
+import 'package:rucksack/screens/profile/broughtlist.dart';
+import 'package:rucksack/screens/profile/saleslist.dart';
+import 'package:rucksack/screens/profile/update.dart';
+import 'package:rucksack/screens/profile/wishlist.dart';
 import 'package:rucksack/screens/profilescreen.dart';
 import 'package:rucksack/screens/additem.dart';
 
@@ -28,7 +33,7 @@ class _MyAppState extends State<MyApp> {
       theme: ThemeData.dark().copyWith(
         scaffoldBackgroundColor: Colors.grey[900],
       ),
-      initialRoute: AddItem.id,
+      initialRoute: Profile.id,
 
       routes: {
         UpImg.id : (context) => UpImg(),
@@ -37,6 +42,11 @@ class _MyAppState extends State<MyApp> {
         LogSignScreen.id : (context) => LogSignScreen(),
         EmailVerify.id : (context) => EmailVerify(),
         Profile.id : (context) => Profile(),
+        UpdateDetail.id : (context) => UpdateDetail(),
+        SalesList.id : (context) => SalesList(),
+        MyOrder.id : (context) => MyOrder(),
+        WishList.id :(context) => WishList(),
+        ProfileDet.id :(context) => ProfileDet(),
       },
     );
   }

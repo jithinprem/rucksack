@@ -28,29 +28,29 @@ class _AddItemState extends State<AddItem> {
   final storageRef = FirebaseStorage.instance.ref();
   XFile? image = XFile('');
   var imgWidget = NetworkImage('https://www.dreamstime.com/no-image-available-icon-photo-camera-flat-vector-illustration-image132483141');
-
+  User currUser = Null as User;
+  String dfileUrl = '';
 
   void select() async {
     final ImagePicker _picker = ImagePicker();
     image = await _picker.pickImage(source: ImageSource.gallery);
   }
 
-  Future<String> upload() async {
-    final mountainsRef = storageRef.child('/items/'+DateTime.now().toString()+'.jpg');
+  Future<String> upload(val) async {
+    final mountainsRef = storageRef.child('/$val/'+DateTime.now().toString()+'.jpg');
     File myFile = File(image!.path);
     try {
       await mountainsRef.putFile(myFile);
     } catch (e) {
       print(e);
     }
-    final String dfileUrl = await mountainsRef.getDownloadURL();
+    dfileUrl = await mountainsRef.getDownloadURL();
     print('this is the download url');
     print(dfileUrl);
     return dfileUrl;
   }
 
   Future getUser() async {
-    User currUser;
     FirebaseAuth _auth = FirebaseAuth.instance;
     currUser =  await _auth.currentUser!;
     useremail = currUser.email!;
@@ -61,10 +61,10 @@ class _AddItemState extends State<AddItem> {
     return currUser;
   }
 
-  void selectAndUpload(){
+  void selectAndUpload(val){
       select();
       print('select is complete');
-      var retstr = upload();
+      var retstr = upload(val);
       print('upload is complete');
       updateIconstoImg(retstr);
   }
@@ -98,6 +98,8 @@ class _AddItemState extends State<AddItem> {
           'name': itemname,
           'price': priceitem,
           'tags': tags,
+          'userid' : currUser.uid,
+          'item_image' : []
         });
         Navigator.pushNamed(context, Profile.id);
       }
@@ -118,7 +120,10 @@ class _AddItemState extends State<AddItem> {
               children: <Widget>[
                 ListTile(
                   title: Text(useremail),
-                  tileColor: Colors.black54,
+                  tileColor: Colors.black38,
+                ),
+                SizedBox(
+                  height: 22,
                 ),
                 Expanded(
                   flex: 2,
@@ -151,7 +156,7 @@ class _AddItemState extends State<AddItem> {
                         ),
                         onPressed: (){
                           //upload the image
-                          selectAndUpload();
+                          selectAndUpload('items');
                         },
                       ),
                       Container(
@@ -173,7 +178,7 @@ class _AddItemState extends State<AddItem> {
                     child:  Row(
                       mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                       children: <Widget>[
-                        ElevatedButton(onPressed: (){selectAndUpload();}, child: Text('Photo'),),
+                        ElevatedButton(onPressed: (){selectAndUpload('items');}, child: Text('Photo'),),
                         ElevatedButton(onPressed: (){UploadItem();}, child: Text('Add'),),
                       ],
                     ),
@@ -208,8 +213,15 @@ class TextF extends StatelessWidget {
       maxLines: maxlin,
       controller: nameController,
       decoration: InputDecoration(
+        contentPadding: const EdgeInsets.symmetric(
+          horizontal: 20,
+          vertical: 20,
+        ),
         hintText: stri,
-        border: OutlineInputBorder(),
+        hintStyle: const TextStyle(fontSize: 14),
+        border: OutlineInputBorder(
+          borderRadius: BorderRadius.circular(15),
+        ),
       ),
 
     );

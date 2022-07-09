@@ -4,6 +4,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 
+import 'detscreen/profiledet.dart';
 import 'homescreen.dart';
 
 
@@ -37,7 +38,7 @@ class _EmailVerifyState extends State<EmailVerify> {
     await user.reload();
     if(user.emailVerified){
       timer.cancel();
-      Navigator.pushNamed(context, HomeScreen.id);
+      Navigator.pushNamed(context, ProfileDet.id);
     }
   }
   @override
@@ -50,7 +51,15 @@ class _EmailVerifyState extends State<EmailVerify> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: Center(child: Text("verify your email ${user.emailVerified}"),),
+      body: Container(
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: <Widget>[
+            Icon(Icons.verified_user_rounded, size: 60,),
+            Text("verify your email", style: TextStyle(fontSize: 26, color: Colors.orange),),
+          ],
+        ),
+      ),
     );
   }
 }
