@@ -23,16 +23,17 @@ class HomeItemTile extends StatelessWidget {
             mainAxisSize: MainAxisSize.min,
             children: <Widget>[
               ListTile(
+                tileColor: Colors.blueGrey[900],
                 leading: Icon(ic, size: 45),
                 title: Text(maintitle),
                 subtitle: Text(subtitle),
                 trailing: CircleAvatar(
-                  backgroundImage: NetworkImage('https://cdn.pixabay.com/photo/2017/11/06/13/45/cap-2923682_960_720.jpg'),
+                  backgroundImage: NetworkImage(profpic),
                   radius: 28,
                 ),
               ),
               Container(
-                child: Image.network('https://cdn.pixabay.com/photo/2017/03/20/15/13/wrist-watch-2159351_960_720.jpg', fit: BoxFit.fill),
+                child: Image.network(pic, fit: BoxFit.fill, height: 240, width: double.infinity,),
               ),
               Container(
                 child: ListTile(

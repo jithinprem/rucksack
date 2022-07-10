@@ -9,19 +9,6 @@ import 'package:rucksack/screens/profile/broughtlist.dart';
 import 'package:rucksack/screens/profile/saleslist.dart';
 import 'package:rucksack/screens/profile/update.dart';
 
-// here we are trying to get data, since our collection has documents and these documents are not named properly
-// we should get all documents and then search within to get our data
-// this should be preferably modified later, try giving the document some name or something better
-CollectionReference _collectionRef = FirebaseFirestore.instance.collection('profile');
-getData() async {
-  // Get docs from collection reference
-  QuerySnapshot querySnapshot = await _collectionRef.get();
-  // Get data from docs and convert map to List
-  final allData = querySnapshot.docs.map((doc) => doc.data()).toList();
-  // for(var x in allData){
-  //   print(x);
-  // }
-}
 
 class Profile extends StatefulWidget {
   static String id = 'profile';
@@ -48,6 +35,8 @@ class _ProfileState extends State<Profile> {
   // here we are trying to get data, since our collection has documents and these documents are not named properly
   // we should get all documents and then search within to get our data
   // this should be preferably modified later, try giving the document some name or something better
+
+  // TODO : update the normally given uid to uid of the current user
 
   getData() async {
     var searchresult = [];

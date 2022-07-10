@@ -33,7 +33,7 @@ class _MyAppState extends State<MyApp> {
       theme: ThemeData.dark().copyWith(
         scaffoldBackgroundColor: Colors.grey[900],
       ),
-      initialRoute: Profile.id,
+      initialRoute: LogSignScreen.id,
 
       routes: {
         UpImg.id : (context) => UpImg(),

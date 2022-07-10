@@ -28,15 +28,16 @@ class _AddItemState extends State<AddItem> {
   final storageRef = FirebaseStorage.instance.ref();
   XFile? image = XFile('');
   var imgWidget = NetworkImage('https://www.dreamstime.com/no-image-available-icon-photo-camera-flat-vector-illustration-image132483141');
-  User currUser = Null as User;
+  User? currUser;
   String dfileUrl = '';
+  List<String> dfiles = [];
 
-  void select() async {
+  select() async {
     final ImagePicker _picker = ImagePicker();
     image = await _picker.pickImage(source: ImageSource.gallery);
   }
 
-  Future<String> upload(val) async {
+  upload(val) async {
     final mountainsRef = storageRef.child('/$val/'+DateTime.now().toString()+'.jpg');
     File myFile = File(image!.path);
     try {
@@ -45,15 +46,18 @@ class _AddItemState extends State<AddItem> {
       print(e);
     }
     dfileUrl = await mountainsRef.getDownloadURL();
-    print('this is the download url');
-    print(dfileUrl);
-    return dfileUrl;
+    dfiles.add(dfileUrl);
+    setState((){
+      dfiles;
+    });
+    print('the dfiles array is -');
+    print(dfiles);
   }
 
   Future getUser() async {
     FirebaseAuth _auth = FirebaseAuth.instance;
     currUser =  await _auth.currentUser!;
-    useremail = currUser.email!;
+    useremail = currUser!.email!;
     print(useremail);
     setState((){
       useremail;
@@ -61,12 +65,12 @@ class _AddItemState extends State<AddItem> {
     return currUser;
   }
 
-  void selectAndUpload(val){
-      select();
+  void selectAndUpload(val) async{
+      await select();
       print('select is complete');
-      var retstr = upload(val);
+      await upload(val);
       print('upload is complete');
-      updateIconstoImg(retstr);
+      updateIconstoImg(dfiles[0]);
   }
 
   updateIconstoImg(url){
@@ -98,8 +102,9 @@ class _AddItemState extends State<AddItem> {
           'name': itemname,
           'price': priceitem,
           'tags': tags,
-          'userid' : currUser.uid,
-          'item_image' : []
+          'userid' : currUser!.uid,
+          'item_image' : dfiles,
+
         });
         Navigator.pushNamed(context, Profile.id);
       }
