@@ -83,7 +83,7 @@ class _HomeScreenState extends State<HomeScreen> {
                         stream: FirebaseFirestore.instance.collection('allitems').snapshots(),
                         builder: (context, AsyncSnapshot<QuerySnapshot> snapshot){
                           if(snapshot.connectionState == ConnectionState.waiting){
-                            return Center(
+                            return const Center(
                               child: CircularProgressIndicator(),
                             );
                           }
@@ -98,11 +98,12 @@ class _HomeScreenState extends State<HomeScreen> {
                               String it_img = itemlistreq[i]['item_image'][0].toString();
                               String it_price = itemlistreq[i]['price'].toString();
                               String user_id = itemlistreq[i]['userid'].toString();
+                              String circular_profileimg = itemlistreq[i]['profile_pic'].toString();
                               print(user_id);
                               String imgid = getImgData(user_id).toString();
                               if(imgid.isNotEmpty){
                                 print('we are done here');
-                                widgetlist.add(HomeItemTile(it_name, it_desc, it_img, 'https://images.unsplash.com/photo-1657013881676-f375a031a421?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxlZGl0b3JpYWwtZmVlZHwxM3x8fGVufDB8fHx8&auto=format&fit=crop&w=500&q=60', it_price, Icons.watch));
+                                widgetlist.add(HomeItemTile(it_name, it_desc, it_img, circular_profileimg, it_price, Icons.watch));
                               }
                             }
                             return Column(

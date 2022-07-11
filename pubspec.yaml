@@ -44,6 +44,7 @@ dependencies:
   firebase_storage: ^10.2.18
   path_provider: ^2.0.11
   dropdown_button2: ^1.6.3
+  font_awesome_flutter: ^10.1.0
 
 
 dev_dependencies:

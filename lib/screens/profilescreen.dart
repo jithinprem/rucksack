@@ -12,13 +12,19 @@ import 'package:rucksack/screens/profile/update.dart';
 
 class Profile extends StatefulWidget {
   static String id = 'profile';
-  const Profile({Key? key}) : super(key: key);
+  // ignore: use_key_in_widget_constructors
+  const Profile();
 
   @override
   State<Profile> createState() => _ProfileState();
 }
 
 class _ProfileState extends State<Profile> {
+
+  void initState(){
+    super.initState();
+    getData();
+  }
 
   final _auth = FirebaseAuth.instance;   // i guess its to retrieve the user who is logged in user
   FirebaseFirestore _firestore = FirebaseFirestore.instance;
@@ -55,6 +61,7 @@ class _ProfileState extends State<Profile> {
 
   @override
   Widget build(BuildContext context) {
+
     return MaterialApp(
       theme: ThemeData.dark(),
       home: Scaffold(
@@ -100,7 +107,7 @@ class _ProfileState extends State<Profile> {
                 }
                   , child: Text('Log out'),
                 ),
-                ElevatedButton(onPressed: ()async{
+                ElevatedButton(onPressed: (){
                   Navigator.pushNamed(context, HomeScreen.id);
                 }
                   , child: Text('Goback'),

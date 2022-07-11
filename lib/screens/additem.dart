@@ -23,6 +23,7 @@ class _AddItemState extends State<AddItem> {
 
   _AddItemState(){
     getUser();
+    getProfilepic();
   }
 
   final storageRef = FirebaseStorage.instance.ref();
@@ -31,10 +32,40 @@ class _AddItemState extends State<AddItem> {
   User? currUser;
   String dfileUrl = '';
   List<String> dfiles = [];
+  String? profilePicUrl;
+
+  FirebaseFirestore _firestore = FirebaseFirestore.instance;
+
+  TextEditingController nameController = TextEditingController();
+  TextEditingController descController = TextEditingController();
+  TextEditingController priceController = TextEditingController();
+  TextEditingController tagsController = TextEditingController();
+
+  getProfilepic() async{
+    var searchresult = [];
+    FirebaseAuth _auth = FirebaseAuth.instance;
+    User? currUser = _auth.currentUser;
+    var uid = currUser!.uid;
+
+    var result = await FirebaseFirestore.instance.collection('profile').where(
+      'uid', isEqualTo: uid,
+    ).get();
+
+    searchresult = await result.docs.map((e) => e.data()).toList();
+    setState((){
+      profilePicUrl = searchresult[0]['profilepic'];
+    });
+    return searchresult[0]['profilepic'];
+  }
 
   select() async {
     final ImagePicker _picker = ImagePicker();
-    image = await _picker.pickImage(source: ImageSource.gallery);
+    image = await _picker.pickImage(source: ImageSource.gallery, imageQuality: 15);
+    // ImagePicker imagePicker = ImagePicker();
+    // image = await imagePicker.pickImage(
+    //   source: ImageSource.camera,
+    //   imageQuality: 35,
+    //);
   }
 
   upload(val) async {
@@ -79,20 +110,13 @@ class _AddItemState extends State<AddItem> {
     });
   }
 
-  FirebaseFirestore _firestore = FirebaseFirestore.instance;
-
-
-
-  TextEditingController nameController = TextEditingController();
-  TextEditingController descController = TextEditingController();
-  TextEditingController priceController = TextEditingController();
-  TextEditingController tagsController = TextEditingController();
-
   void UploadItem() async{
       var itemname = nameController.text;
       var descitem = descController.text;
       var priceitem = priceController.text;
       var tags = tagsController.text;
+
+      profilePicUrl = await getProfilepic();
 
       if(itemname != Null && descitem != Null && priceitem != Null) {
         print('uploading is being performed......................');
@@ -104,7 +128,7 @@ class _AddItemState extends State<AddItem> {
           'tags': tags,
           'userid' : currUser!.uid,
           'item_image' : dfiles,
-
+          'profile_pic' : profilePicUrl,
         });
         Navigator.pushNamed(context, Profile.id);
       }
@@ -183,7 +207,8 @@ class _AddItemState extends State<AddItem> {
                     child:  Row(
                       mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                       children: <Widget>[
-                        ElevatedButton(onPressed: (){selectAndUpload('items');}, child: Text('Photo'),),
+                        //ElevatedButton(onPressed: (){selectAndUpload('items');}, child: Text('Photo'),),
+                        ElevatedButton(onPressed: (){getProfilepic();}, child: Text('Photo'),),
                         ElevatedButton(onPressed: (){UploadItem();}, child: Text('Add'),),
                       ],
                     ),
