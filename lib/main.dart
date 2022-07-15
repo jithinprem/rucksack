@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:rucksack/screens/afteropen/afteropen.dart';
 import 'package:rucksack/screens/detscreen/profiledet.dart';
 import 'package:rucksack/screens/emailverify.dart';
 import 'package:rucksack/screens/homescreen.dart';
@@ -36,6 +37,7 @@ class _MyAppState extends State<MyApp> {
       initialRoute: HomeScreen.id,
 
       routes: {
+        AfterOpen.id : (context) => AfterOpen(),
         UpImg.id : (context) => UpImg(),
         AddItem.id : (context) => AddItem(),
         HomeScreen.id : (context) => HomeScreen(),

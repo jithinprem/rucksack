@@ -60,6 +60,7 @@ class _HomeScreenState extends State<HomeScreen> {
         appBar: AppBar(
             title: Text(changeint.toString()),
             leading: Icon(Icons.menu_rounded),
+            backgroundColor: Color(0xff141E27),
             actions: <Widget>[
               IconButton(
                 icon: Icon(

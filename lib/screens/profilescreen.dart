@@ -65,7 +65,7 @@ class _ProfileState extends State<Profile> {
     return MaterialApp(
       theme: ThemeData.dark(),
       home: Scaffold(
-        appBar: AppBar(title: Text('Profile', style: TextStyle(color: Colors.white),), backgroundColor: Colors.orange, leading: Icon(Icons.manage_accounts),),
+        appBar: AppBar(title: Text('Profile', style: TextStyle(color: Colors.white),), backgroundColor: Color(0xff141E27), leading: Icon(Icons.manage_accounts),),
         body: Column(
           children: <Widget>[
            Row(
