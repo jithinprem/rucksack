@@ -1,9 +1,12 @@
 import 'dart:async';
+import 'dart:ui';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:rucksack/mywidget/homecard.dart';
+import 'package:rucksack/mywidget/myiconbutton/myiconbutton.dart';
 import 'package:rucksack/screens/profilescreen.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:rucksack/color/colors.dart';
 
 // getCall() async{
 //   await Future.delayed(const Duration(seconds: 4), (){});
@@ -55,72 +58,149 @@ class _HomeScreenState extends State<HomeScreen> {
 
   @override
   Widget build(BuildContext context) {
-    return SafeArea(
-      child: Scaffold(
-        appBar: AppBar(
-            title: Text(changeint.toString()),
-            leading: Icon(Icons.menu_rounded),
-            backgroundColor: Color(0xff141E27),
-            actions: <Widget>[
-              IconButton(
-                icon: Icon(
-                  Icons.person,
-                  color: Colors.white,
-                ),
-                onPressed: () {
-                  Navigator.pushNamed(context, Profile.id).then(onGoBack);
-                },
-              )
-            ]),
-        body: Container(
-          child: Column(
-            children: <Widget>[
-              Expanded(
-                child: ListView(
-                    padding: EdgeInsets.all(15),
-                    //children: RetList.mylist,
-                    children: <Widget>[
-                      StreamBuilder<QuerySnapshot>(
-                        stream: FirebaseFirestore.instance.collection('allitems').snapshots(),
-                        builder: (context, AsyncSnapshot<QuerySnapshot> snapshot){
-                          if(snapshot.connectionState == ConnectionState.waiting){
-                            return const Center(
-                              child: CircularProgressIndicator(),
-                            );
-                          }
-                          if(snapshot.hasData){
-                            var itemlistreq = [];
-                            itemlistreq = snapshot.data!.docs.map((e) => e.data()).toList();
-
-                            List<Widget> widgetlist = [];
-                            for(int i=0; i<itemlistreq.length; i++){
-                              String it_name = itemlistreq[i]['name'].toString();
-                              String it_desc = itemlistreq[i]['description'].toString();
-                              String it_img = itemlistreq[i]['item_image'][0].toString();
-                              String it_price = itemlistreq[i]['price'].toString();
-                              String user_id = itemlistreq[i]['userid'].toString();
-                              String circular_profileimg = itemlistreq[i]['profile_pic'].toString();
-                              print(user_id);
-                              String imgid = getImgData(user_id).toString();
-                              if(imgid.isNotEmpty){
-                                print('we are done here');
-                                widgetlist.add(HomeItemTile(it_name, it_desc, it_img, circular_profileimg, it_price, Icons.watch));
-                              }
+    return MaterialApp(
+      theme: ThemeData.dark().copyWith(scaffoldBackgroundColor: Colors.black87),
+        home: SafeArea(
+        child: Scaffold(
+          appBar: AppBar(
+              title: Text('RuckSack', style: TextStyle(fontFamily: 'PressStart',fontSize: 14, color: Colors.black54),),
+              leading: Icon(Icons.menu_rounded, color: Colors.black38,),
+              backgroundColor: bcol,
+              actions: <Widget>[
+                IconButton(
+                  icon: Icon(
+                    Icons.person,
+                    color: Colors.black38,
+                  ),
+                  onPressed: () {
+                    Navigator.pushNamed(context, Profile.id).then(onGoBack);
+                  },
+                )
+              ]),
+          body: Container(
+            child: Column(
+              children: <Widget>[
+                Expanded(
+                  child: ListView(
+                      padding: EdgeInsets.all(0),
+                      //children: RetList.mylist,
+                      children: <Widget>[
+                        Expanded(
+                          child : Stack(
+                            children: [
+                              Container(
+                                  height: 150,
+                                  width: double.infinity,
+                                  decoration: BoxDecoration(
+                                    image: DecorationImage(
+                                      image: NetworkImage(
+                                          'https://images.unsplash.com/photo-1536562833330-a59dc2305a5c?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxzZWFyY2h8MTR8fHJ1Y2tzYWNrfGVufDB8fDB8fA%3D%3D&auto=format&fit=crop&w=500&q=60'),
+                                      colorFilter: ColorFilter.mode(
+                                        Colors.black38.withOpacity(0.3),
+                                        BlendMode.darken,
+                                      ),
+                                      fit: BoxFit.fill,
+                                    ),
+                                  ),
+                                  child: Padding(
+                                    padding: const EdgeInsets.only(left: 17, top: 15),
+                                    child: Text(
+                                      'RUCKSACK, \n       Good Things Inside...',
+                                      style: TextStyle(
+                                          fontFamily: 'Comfortaa', color: Colors.white),
+                                    ),
+                                  )),
+                              Row(
+                                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                                children: <Widget>[
+                                  circlenode(Icons.add_a_photo_outlined, (){print('additem');}),
+                                  circlenode(Icons.person, (){print('additem');}),
+                                  circlenode(Icons.location_on, (){print('additem');}),
+                                  circlenode(Icons.search, (){print('additem');}),
+                                ],
+                              ),
+                            ],
+                          ),
+                        ),
+                        SizedBox(
+                          height: 20,
+                        ),
+                        StreamBuilder<QuerySnapshot>(
+                          stream: FirebaseFirestore.instance.collection('allitems').snapshots(),
+                          builder: (context, AsyncSnapshot<QuerySnapshot> snapshot){
+                            if(snapshot.connectionState == ConnectionState.waiting){
+                              return const Center(
+                                child: CircularProgressIndicator(),
+                              );
                             }
-                            return Column(
-                              children: widgetlist,
-                            );
-                          }
-                          return Text('nothing exist');
-                        },
-                      ),
-                    ]
+                            if(snapshot.hasData){
+                              var itemlistreq = [];
+                              itemlistreq = snapshot.data!.docs.map((e) => e.data()).toList();
+
+                              List<Widget> widgetlist = [];
+                              for(int i=0; i<itemlistreq.length; i++){
+                                String it_name = itemlistreq[i]['name'].toString();
+                                String it_desc = itemlistreq[i]['description'].toString();
+                                String it_img = itemlistreq[i]['item_image'][0].toString();
+                                String it_price = itemlistreq[i]['price'].toString();
+                                String user_id = itemlistreq[i]['userid'].toString();
+                                String circular_profileimg = itemlistreq[i]['profile_pic'].toString();
+                                print(user_id);
+                                String imgid = getImgData(user_id).toString();
+                                if(imgid.isNotEmpty){
+                                  print('we are done here');
+                                  widgetlist.add(HomeItemTile(it_name, it_desc, it_img, circular_profileimg, it_price, Icons.watch));
+                                }
+                              }
+                              return Column(
+                                children: widgetlist,
+                              );
+                              // return Container(
+                              //   child: GridView.count(
+                              //     crossAxisCount: 2,
+                              //     childAspectRatio: (100 / 100),
+                              //     controller: ScrollController(keepScrollOffset: false),
+                              //     shrinkWrap: true,
+                              //     scrollDirection: Axis.vertical,
+                              //     children: widgetlist
+                              //   ),
+                              // );
+                            }
+                            return Text('nothing exist');
+                          },
+                        ),
+                      ]
+                  ),
                 ),
-              ),
-            ],
+              ],
+            ),
           ),
         ),
       ),
+    );
+  }
+}
+
+class circlenode extends StatelessWidget {
+  var circleicon;
+  var circlefunc;
+  circlenode(this.circleicon, this.circlefunc){}
+
+  @override
+  Widget build(BuildContext context) {
+    return TextButton(
+      child: Container(
+        margin: EdgeInsets.only( top: 110),
+        child: CircleAvatar(
+          child: Icon(
+            circleicon,
+            color: Colors.grey[800],
+          ),
+          radius: 30,
+          backgroundColor: Color(0xFFEFE7E2),
+        ),
+      ),
+      onPressed: circlefunc,
     );
   }
 }

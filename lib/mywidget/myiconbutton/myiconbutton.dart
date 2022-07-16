@@ -6,9 +6,9 @@ class simpleIconButton extends StatelessWidget {
   var boxColor;
   var onpressedfunc;
   var boxicon;
-
-  simpleIconButton(this.boxicon, this.iconColor, this.boxColor, this.onpressedfunc){
-
+  var size;
+  simpleIconButton(this.boxicon, this.iconColor, this.boxColor, this.onpressedfunc, this.size){
+    this.size = this.size*1.0;
   }
 
   @override
@@ -21,7 +21,7 @@ class simpleIconButton extends StatelessWidget {
           borderRadius: BorderRadius.all(Radius.circular(9)),
           color: boxColor,
         ),
-        child: Icon(boxicon, color: iconColor, size: 17,),
+        child: Icon(boxicon, color: iconColor, size: size,),
       ),
       onPressed: onpressedfunc,
     );

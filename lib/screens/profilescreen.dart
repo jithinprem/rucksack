@@ -1,6 +1,7 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
+import 'package:rucksack/color/colors.dart';
 import 'package:rucksack/screens/additem.dart';
 import 'package:rucksack/screens/homescreen.dart';
 import 'package:rucksack/screens/logSignScreen.dart';
@@ -65,28 +66,40 @@ class _ProfileState extends State<Profile> {
     return MaterialApp(
       theme: ThemeData.dark(),
       home: Scaffold(
-        appBar: AppBar(title: Text('Profile', style: TextStyle(color: Colors.white),), backgroundColor: Color(0xff141E27), leading: Icon(Icons.manage_accounts),),
+        appBar: AppBar(title: Text('Profile', style: TextStyle(color: Colors.black54, fontFamily: 'PressStart', fontSize: 13),), backgroundColor: bcol, leading: TextButton(child: Icon(Icons.arrow_back, color: Colors.black54,), onPressed: (){Navigator.pushNamed(context, HomeScreen.id);},),),
         body: Column(
           children: <Widget>[
-           Row(
-             children: <Widget>[
-               Container(
-                 margin: EdgeInsets.all(20.0),
-                 child: CircleAvatar(
-                   backgroundImage: NetworkImage(unloadedpic),
-                   radius: 60,
-                 ),
-               ),
-               Container(
-                 child: Column(
-                   children: <Widget>[
-                     Text(Gotname, style: TextStyle(color: Colors.orange, fontSize: 28),),
-                     Text(GotBranch+' department'),
-                     Text(GotYear +'rd year', style: TextStyle(fontSize: 20),)
-                   ],
-                 ),
+           Container(
+             decoration: BoxDecoration(
+               image: DecorationImage(
+                 image: NetworkImage('https://images.ctfassets.net/hrltx12pl8hq/5KiKmVEsCQPMNrbOE6w0Ot/341c573752bf35cb969e21fcd279d3f9/hero-img_copy.jpg?fit=fill&w=800&h=300'),
+                 fit: BoxFit.fill,
+                 colorFilter: ColorFilter.mode(Colors.black.withOpacity(0.3), BlendMode.darken)
                )
-             ],
+             ),
+             //color: Color(0xff1B2430),
+             child:  Row(
+               mainAxisAlignment: MainAxisAlignment.spaceBetween,
+               children: <Widget>[
+                 Container(
+                   margin: EdgeInsets.all(20.0),
+                   child: CircleAvatar(
+                     backgroundImage: NetworkImage(unloadedpic),
+                     radius: 60,
+                   ),
+                 ),
+                 Container(
+                   padding: EdgeInsets.only(right: 30),
+                   child: Column(
+                     children: <Widget>[
+                       Text(Gotname, style: TextStyle(color: Colors.orange, fontSize: 20, fontFamily: 'Montserrat', fontWeight: FontWeight.bold),),
+                       Text(GotBranch+' department', style: TextStyle(fontFamily: 'ZillaSlab', fontSize: 18),),
+                       Text(GotYear +'rd year', style: TextStyle(fontSize: 20, fontFamily: 'ZillaSlab'),)
+                     ],
+                   ),
+                 )
+               ],
+             ),
            ),
             ProfilePagetile('Update details',
                 'the products in your sellcart', Icons.person, (){Navigator.pushNamed(context, UpdateDetail.id);}),

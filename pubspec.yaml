@@ -95,6 +95,9 @@ flutter:
     - family: Montserrat
       fonts:
         - asset: fonts/Montserrat-VariableFont_wght.ttf
+    - family: ZillaSlab
+      fonts:
+        - asset: fonts/ZillaSlab-Regular.ttf
           #Comfortaa-VariableFont_wght Roboto-Regular
   # fonts:
   #   - family: Schyler

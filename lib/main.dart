@@ -34,7 +34,7 @@ class _MyAppState extends State<MyApp> {
       theme: ThemeData.dark().copyWith(
         scaffoldBackgroundColor: Colors.grey[900],
       ),
-      initialRoute: HomeScreen.id,
+      initialRoute: Profile.id,
 
       routes: {
         AfterOpen.id : (context) => AfterOpen(),

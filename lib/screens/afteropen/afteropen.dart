@@ -65,19 +65,19 @@ class _AfterOpenState extends State<AfterOpen> {
                           simpleIconButton(FontAwesomeIcons.solidHeart,
                               Colors.black54, Color(0xff92BA92), () {
                             print('hello');
-                          }),
+                          }, 17),
                           simpleIconButton(FontAwesomeIcons.shoppingBag,
                               Colors.black54, Color(0xff92BA92), () {
                             print('hello');
-                          }),
+                          }, 17),
                           simpleIconButton(FontAwesomeIcons.phone,
                               Colors.black54, Color(0xff92BA92), () {
                             print('hello');
-                          }),
+                          }, 17),
                           simpleIconButton(FontAwesomeIcons.paperclip,
                               Colors.black54, Color(0xff92BA92), () {
                             print('hello');
-                          }),
+                          }, 17),
                         ],
                       ),
                       Row(
