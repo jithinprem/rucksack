@@ -36,7 +36,7 @@ class _MyAppState extends State<MyApp> {
       theme: ThemeData.dark().copyWith(
         scaffoldBackgroundColor: Colors.grey[900],
       ),
-      initialRoute: LoginScreen.id,
+      initialRoute: AddItem.id,
 
       routes: {
         RealLogin.id : (context) => RealLogin(),

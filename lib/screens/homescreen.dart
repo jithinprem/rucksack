@@ -4,6 +4,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:rucksack/mywidget/homecard.dart';
 import 'package:rucksack/mywidget/myiconbutton/myiconbutton.dart';
+import 'package:rucksack/screens/additem.dart';
 import 'package:rucksack/screens/profilescreen.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:rucksack/color/colors.dart';
@@ -113,7 +114,7 @@ class _HomeScreenState extends State<HomeScreen> {
                               Row(
                                 mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                                 children: <Widget>[
-                                  circlenode(Icons.add_a_photo_outlined, (){print('additem');}),
+                                  circlenode(Icons.add_a_photo_outlined, (){Navigator.pushNamed(context, AddItem.id);}),
                                   circlenode(Icons.person, (){print('additem');}),
                                   circlenode(Icons.location_on, (){print('additem');}),
                                   circlenode(Icons.search, (){print('additem');}),
