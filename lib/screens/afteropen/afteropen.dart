@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:rucksack/color/colors.dart';
 import 'package:rucksack/mywidget/myiconbutton/myiconbutton.dart';
 
 var todelstr =
@@ -38,7 +39,8 @@ class _AfterOpenState extends State<AfterOpen> {
                     borderRadius: BorderRadius.only(
                         topLeft: Radius.circular(25),
                         topRight: Radius.circular(25)),
-                    color: Colors.grey[900],
+                    color: Color(0xff2C3333),
+                    //color: Colors.white,
                   ),
                   margin: EdgeInsets.only(top: 230),
                   height: 600 - 114,
@@ -54,7 +56,7 @@ class _AfterOpenState extends State<AfterOpen> {
                             color: Colors.white,
                             fontSize: 14,
                             fontFamily: 'PressStart',
-                            //backgroundColor: Colors.black54
+                            //backgroundColor: Colors.black54,
                             letterSpacing: 1.8,
                           ),
                         ),
@@ -63,19 +65,19 @@ class _AfterOpenState extends State<AfterOpen> {
                         mainAxisAlignment: MainAxisAlignment.spaceAround,
                         children: <Widget>[
                           simpleIconButton(FontAwesomeIcons.solidHeart,
-                              Colors.black54, Color(0xff92BA92), () {
+                              Colors.black54, Color(0xff69DADB), () {
                             print('hello');
                           }, 17),
                           simpleIconButton(FontAwesomeIcons.shoppingBag,
-                              Colors.black54, Color(0xff92BA92), () {
+                              Colors.black54, Color(0xff69DADB), () {
                             print('hello');
                           }, 17),
                           simpleIconButton(FontAwesomeIcons.phone,
-                              Colors.black54, Color(0xff92BA92), () {
+                              Colors.black54, Color(0xff69DADB), () {
                             print('hello');
                           }, 17),
                           simpleIconButton(FontAwesomeIcons.paperclip,
-                              Colors.black54, Color(0xff92BA92), () {
+                              Colors.black54, Color(0xff69DADB), () {
                             print('hello');
                           }, 17),
                         ],
@@ -136,10 +138,10 @@ class RowTile extends StatelessWidget {
             child: Icon(
               reficon,
               size: 20,
-              color: Colors.black54,
+              color: Colors.white54,
             ),
             radius: 30,
-            backgroundColor: Colors.white54,
+            backgroundColor: Color(0xff395B64),
           ),
         ),
         Container(
@@ -148,7 +150,7 @@ class RowTile extends StatelessWidget {
           child: Text(
             txt,
             style: TextStyle(
-                fontFamily: 'Montserrat', fontWeight: FontWeight.w400),
+                fontFamily: 'Roboto', fontWeight: FontWeight.w200),
           ),
         ),
       ],

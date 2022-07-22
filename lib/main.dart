@@ -7,7 +7,9 @@ import 'package:rucksack/screens/imageupload/imgupload.dart';
 import 'package:rucksack/screens/logSignScreen.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
+import 'package:rucksack/screens/logsecond.dart';
 import 'package:rucksack/screens/profile/broughtlist.dart';
+import 'package:rucksack/screens/profile/logfirst.dart';
 import 'package:rucksack/screens/profile/saleslist.dart';
 import 'package:rucksack/screens/profile/update.dart';
 import 'package:rucksack/screens/profile/wishlist.dart';
@@ -34,9 +36,11 @@ class _MyAppState extends State<MyApp> {
       theme: ThemeData.dark().copyWith(
         scaffoldBackgroundColor: Colors.grey[900],
       ),
-      initialRoute: LogSignScreen.id,
+      initialRoute: LoginScreen.id,
 
       routes: {
+        RealLogin.id : (context) => RealLogin(),
+        LoginScreen.id : (context) => LoginScreen(),
         AfterOpen.id : (context) => AfterOpen(),
         UpImg.id : (context) => UpImg(),
         AddItem.id : (context) => AddItem(),
