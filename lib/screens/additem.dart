@@ -183,7 +183,7 @@ class _AddItemState extends State<AddItem> {
         'item_image': dfiles,
         'profile_pic': profilePicUrl,
       });
-      Navigator.pushNamed(context, Profile.id);
+      Navigator.pop(context);
     }
   }
 

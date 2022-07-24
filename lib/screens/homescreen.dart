@@ -1,13 +1,11 @@
 import 'dart:async';
 import 'dart:ui';
-import 'package:firebase_auth/firebase_auth.dart';
-import 'package:flutter/material.dart';
-import 'package:rucksack/mywidget/homecard.dart';
-import 'package:rucksack/mywidget/myiconbutton/myiconbutton.dart';
-import 'package:rucksack/screens/additem.dart';
-import 'package:rucksack/screens/profilescreen.dart';
+
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:flutter/material.dart';
 import 'package:rucksack/color/colors.dart';
+import 'package:rucksack/mywidget/homecard.dart';
+import 'package:rucksack/screens/profilescreen.dart';
 
 // getCall() async{
 //   await Future.delayed(const Duration(seconds: 4), (){});
@@ -16,18 +14,21 @@ import 'package:rucksack/color/colors.dart';
 
 getImgData(UserUid) async {
   var searchresult = [];
-  final result = await FirebaseFirestore.instance.collection('profile')
-      .where('uid', isEqualTo: UserUid,)
+  final result = await FirebaseFirestore.instance
+      .collection('profile')
+      .where(
+        'uid',
+        isEqualTo: UserUid,
+      )
       .get();
   searchresult = await result.docs.map((e) => e.data()).toList();
   print(searchresult[0]['profilepic']);
   return await searchresult[0]['profilepic'];
-
 }
 
 class HomeScreen extends StatefulWidget {
   static String id = 'homescreen';
-  HomeScreen(){
+  HomeScreen() {
     //getCall();
   }
 
@@ -40,13 +41,12 @@ class _HomeScreenState extends State<HomeScreen> {
   var changeint = 0;
   var profileImg = '';
 
-  Future<String> setprofileImg(user_id) async{
-    String profileImg= await getImgData(user_id).toString();
+  Future<String> setprofileImg(user_id) async {
+    String profileImg = await getImgData(user_id).toString();
     print('the profile image after setprofileImg is :');
     print(profileImg.toString());
     return profileImg;
   }
-
 
   void refreshData() {
     changeint++;
@@ -61,11 +61,20 @@ class _HomeScreenState extends State<HomeScreen> {
   Widget build(BuildContext context) {
     return MaterialApp(
       theme: ThemeData.dark().copyWith(scaffoldBackgroundColor: Colors.black87),
-        home: SafeArea(
+      home: SafeArea(
         child: Scaffold(
           appBar: AppBar(
-              title: Text('RuckSack', style: TextStyle(fontFamily: 'PressStart',fontSize: 14, color: Colors.black54),),
-              leading: Icon(Icons.menu_rounded, color: Colors.black38,),
+              title: Text(
+                'RuckSack',
+                style: TextStyle(
+                    fontFamily: 'PressStart',
+                    fontSize: 14,
+                    color: Colors.black54),
+              ),
+              leading: Icon(
+                Icons.menu_rounded,
+                color: Colors.black38,
+              ),
               backgroundColor: bcol,
               actions: <Widget>[
                 IconButton(
@@ -82,12 +91,11 @@ class _HomeScreenState extends State<HomeScreen> {
             child: Column(
               children: <Widget>[
                 Expanded(
-                  child: ListView(
-                      padding: EdgeInsets.all(0),
+                  child: ListView(padding: EdgeInsets.all(0),
                       //children: RetList.mylist,
                       children: <Widget>[
                         Expanded(
-                          child : Stack(
+                          child: Stack(
                             children: [
                               Container(
                                   height: 150,
@@ -103,75 +111,101 @@ class _HomeScreenState extends State<HomeScreen> {
                                       fit: BoxFit.fill,
                                     ),
                                   ),
-                                  child: Padding(
-                                    padding: const EdgeInsets.only(left: 17, top: 15),
+                                  child: const Padding(
+                                    padding: EdgeInsets.only(
+                                        left: 17, top: 15),
                                     child: Text(
                                       'RUCKSACK, \n       Good Things Inside...',
                                       style: TextStyle(
-                                          fontFamily: 'Comfortaa', color: Colors.white),
+                                          fontFamily: 'Comfortaa',
+                                          color: Colors.white),
                                     ),
                                   )),
                               Row(
-                                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                                mainAxisAlignment:
+                                    MainAxisAlignment.spaceEvenly,
                                 children: <Widget>[
-                                  circlenode(Icons.add_a_photo_outlined, (){Navigator.pushNamed(context, AddItem.id);}),
-                                  circlenode(Icons.person, (){print('additem');}),
-                                  circlenode(Icons.location_on, (){print('additem');}),
-                                  circlenode(Icons.search, (){print('additem');}),
+                                  circlenode(Icons.add_a_photo_outlined, () {
+                                    print('additem');
+                                  }),
+                                  circlenode(Icons.person, () {
+                                    print('additem');
+                                    Navigator.pushNamed(context, Profile.id)
+                                        .then(onGoBack);
+                                  }),
+                                  circlenode(Icons.location_on, () {
+                                    print('additem');
+                                  }),
+                                  circlenode(Icons.search, () {
+                                    print('additem');
+                                    Navigator.of(context).push(
+                                        MaterialPageRoute(
+                                            builder: (_) =>
+                                                const SearchPage()));
+                                  }),
                                 ],
                               ),
                             ],
                           ),
                         ),
-                        SizedBox(
+                        const SizedBox(
                           height: 20,
                         ),
                         StreamBuilder<QuerySnapshot>(
-                          stream: FirebaseFirestore.instance.collection('allitems').snapshots(),
-                          builder: (context, AsyncSnapshot<QuerySnapshot> snapshot){
-                            if(snapshot.connectionState == ConnectionState.waiting){
+                          stream: FirebaseFirestore.instance
+                              .collection('allitems')
+                              .snapshots(),
+                          builder:
+                              (context, AsyncSnapshot<QuerySnapshot> snapshot) {
+                            if (snapshot.connectionState ==
+                                ConnectionState.waiting) {
                               return const Center(
                                 child: CircularProgressIndicator(),
                               );
                             }
-                            if(snapshot.hasData){
-                              var itemlistreq = [];
-                              itemlistreq = snapshot.data!.docs.map((e) => e.data()).toList();
+                            if (snapshot.hasData) {
+                              List itemlistreq = [];
+                              itemlistreq = snapshot.data!.docs
+                                  .map((e) => e.data())
+                                  .toList();
 
                               List<Widget> widgetlist = [];
-                              for(int i=0; i<itemlistreq.length; i++){
-                                String it_name = itemlistreq[i]['name'].toString();
-                                String it_desc = itemlistreq[i]['description'].toString();
-                                String it_img = itemlistreq[i]['item_image'][0].toString();
-                                String it_price = itemlistreq[i]['price'].toString();
-                                String user_id = itemlistreq[i]['userid'].toString();
-                                String circular_profileimg = itemlistreq[i]['profile_pic'].toString();
-                                print(user_id);
+                              for (int i = 0; i < itemlistreq.length; i++) {
+                                String it_name =
+                                    itemlistreq[i]['name'].toString();
+                                String it_desc =
+                                    itemlistreq[i]['description'].toString();
+                                String it_img =
+                                    itemlistreq[i]['item_image'][0].toString();
+                                String it_price =
+                                    itemlistreq[i]['price'].toString();
+                                String user_id =
+                                    itemlistreq[i]['userid'].toString();
+                                String circular_profileimg =
+                                    itemlistreq[i]['profile_pic'].toString();
+
                                 String imgid = getImgData(user_id).toString();
-                                if(imgid.isNotEmpty){
+                                if (imgid.isNotEmpty) {
                                   print('we are done here');
-                                  widgetlist.add(HomeItemTile(it_name, it_desc, it_img, circular_profileimg, it_price, Icons.watch));
+                                  widgetlist.add(HomeItemTile(
+                                      it_name,
+                                      it_desc,
+                                      it_img,
+                                      circular_profileimg,
+                                      it_price,
+                                      Icons.watch,
+                                      //itemlistreq[i],
+                                  ));
                                 }
                               }
                               return Column(
                                 children: widgetlist,
                               );
-                              // return Container(
-                              //   child: GridView.count(
-                              //     crossAxisCount: 2,
-                              //     childAspectRatio: (100 / 100),
-                              //     controller: ScrollController(keepScrollOffset: false),
-                              //     shrinkWrap: true,
-                              //     scrollDirection: Axis.vertical,
-                              //     children: widgetlist
-                              //   ),
-                              // );
                             }
                             return Text('nothing exist');
                           },
                         ),
-                      ]
-                  ),
+                      ]),
                 ),
               ],
             ),
@@ -185,13 +219,13 @@ class _HomeScreenState extends State<HomeScreen> {
 class circlenode extends StatelessWidget {
   var circleicon;
   var circlefunc;
-  circlenode(this.circleicon, this.circlefunc){}
+  circlenode(this.circleicon, this.circlefunc) {}
 
   @override
   Widget build(BuildContext context) {
     return TextButton(
       child: Container(
-        margin: EdgeInsets.only( top: 110),
+        margin: EdgeInsets.only(top: 110),
         child: CircleAvatar(
           child: Icon(
             circleicon,
@@ -256,3 +290,132 @@ class circlenode extends StatelessWidget {
 //     return mylist; // all widget added now retrun the list here
 //   }
 // }
+
+// Search Page
+class SearchPage extends StatefulWidget {
+  const SearchPage({Key? key}) : super(key: key);
+
+  @override
+  State<SearchPage> createState() => _SearchPageState();
+}
+
+class _SearchPageState extends State<SearchPage> {
+  final myController = TextEditingController();
+  var val = "";
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(
+          // The search area here
+          automaticallyImplyLeading: false,
+          title: Center(
+            child: Padding(
+              padding: const EdgeInsets.only(top: 8, bottom: 8),
+              child: Column(
+                children: [
+                  Container(
+                    width: double.infinity,
+                    height: 40,
+                    decoration: BoxDecoration(
+                        color: Colors.black12,
+                        borderRadius: BorderRadius.circular(5)),
+                    child: Center(
+                      child: TextField(
+                        onSubmitted: (value) {
+                          print('we are sumbitting');
+                          setState(() {
+                            val = value;
+                          });
+                        },
+                        autofocus: true,
+                        controller: myController,
+                        style: TextStyle(fontSize: 18.0, color: Colors.black),
+                        decoration: InputDecoration(
+                          prefixIcon: IconButton(
+                            icon: const Icon(Icons.search),
+                            onPressed: () {
+                              setState(() {
+                                val = myController.text;
+                              });
+                            },
+                          ),
+                          suffixIcon: IconButton(
+                            icon: const Icon(Icons.clear),
+                            onPressed: () {
+                              /* Clear the search field */
+                              myController.text = "";
+                            },
+                          ),
+                          hintText: 'Search...',
+                          border: InputBorder.none,
+                        ),
+                      ),
+                    ),
+                  ),
+                ],
+              ),
+            ),
+          )),
+      body: Column(
+        children: [
+          Expanded(
+            child: ListView(padding: EdgeInsets.all(0),
+                //children: RetList.mylist,
+                children: <Widget>[
+                  SizedBox(
+                    height: 20,
+                  ),
+                  StreamBuilder<QuerySnapshot>(
+                    stream: FirebaseFirestore.instance
+                        .collection('allitems')
+                        .snapshots(),
+                    builder: (context, AsyncSnapshot<QuerySnapshot> snapshot) {
+                      if (snapshot.connectionState == ConnectionState.waiting) {
+                        return const Center(
+                          child: CircularProgressIndicator(),
+                        );
+                      }
+                      if (snapshot.hasData) {
+                        var itemlistreq = [];
+                        itemlistreq =
+                            snapshot.data!.docs.map((e) => e.data()).toList();
+
+                        List<Widget> widgetlist = [];
+                        for (int i = 0; i < itemlistreq.length; i++) {
+                          String it_name = itemlistreq[i]['name'].toString();
+                          if (it_name.contains(val)) {
+                            String it_desc =
+                                itemlistreq[i]['description'].toString();
+                            String it_img =
+                                itemlistreq[i]['item_image'][0].toString();
+                            String it_price =
+                                itemlistreq[i]['price'].toString();
+                            String user_id =
+                                itemlistreq[i]['userid'].toString();
+                            String circular_profileimg =
+                                itemlistreq[i]['profile_pic'].toString();
+                            print(user_id);
+                            String imgid = getImgData(user_id).toString();
+                            if (imgid.isNotEmpty) {
+                              print('we are done here');
+                              widgetlist.add(
+                                HomeItemTile(it_name, it_desc, it_img,
+                                    circular_profileimg, it_price, Icons.watch),
+                              );
+                            }
+                          }
+                        }
+                        return Column(
+                          children: widgetlist,
+                        );
+                      }
+                      return Text('nothing exist');
+                    },
+                  ),
+                ]),
+          ),
+        ],
+      ),
+    );
+  }
+}

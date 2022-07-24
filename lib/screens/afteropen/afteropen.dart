@@ -1,6 +1,8 @@
+import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:rucksack/color/colors.dart';
+import 'package:rucksack/mywidget/homecard.dart';
 import 'package:rucksack/mywidget/myiconbutton/myiconbutton.dart';
 
 var todelstr =
@@ -8,7 +10,14 @@ var todelstr =
     ' A few examples of how some people use this generator are listed in the following paragraphs.';
 
 class AfterOpen extends StatefulWidget {
+
   const AfterOpen({Key? key}) : super(key: key);
+  // {
+  //   /*{this.selectedItem}*/
+  //   // print('\n\n\n this is what we are doing\n\n\n');
+  //   // print(this.selectedItem);
+  //   // allimgs = selectedItem!['item_image'];
+  // }
   static String id = 'afteropen';
 
   @override
@@ -26,14 +35,46 @@ class _AfterOpenState extends State<AfterOpen> {
           children: [
             Stack(
               children: <Widget>[
-                Container(
-                  child: Image(
-                    image: NetworkImage(
-                        'https://cdn.pixabay.com/photo/2022/07/08/06/53/chateau-7308612__340.jpg'),
-                    fit: BoxFit.fill,
-                  ),
-                  height: 280,
+                /*
+                CarouselSlider(
+                      options: CarouselOptions(height: 400.0),
+                  items: [
+                    ListView.builder(
+                    itemCount: widget.selectedItem!['item_image']!.length,
+                    itemBuilder: (BuildContext context,index){
+                      return Container(
+                          width: MediaQuery.of(context).size.width,
+                          margin: EdgeInsets.symmetric(horizontal: 5.0),
+                          child: Image(image: NetworkImage(widget.selectedItem!['item_image'][index])),
+                      );
+                    },
+                  ),],
+
+                  //height: 280,
                 ),
+                */
+               /* CarouselSlider(
+                  options: CarouselOptions(height: 400.0,      enableInfiniteScroll: false,      autoPlay: false,
+
+                  ),
+                  items: widget.allimgs?.map((i) {
+                    print("\nwidget is here rio"+i+"\n");
+                    return Builder(
+                      builder: (BuildContext context) {
+                        return Container(
+                            width: MediaQuery.of(context).size.width,
+                            margin: EdgeInsets.symmetric(horizontal: 5.0),
+                            decoration: BoxDecoration(
+                                color: Colors.amber
+                            ),
+                            child: Image(image: NetworkImage(i.toString()),),
+                        );
+                      },
+                    );
+                  }).toList(),
+                ),
+
+                */
                 Container(
                   decoration: BoxDecoration(
                     borderRadius: BorderRadius.only(
@@ -101,6 +142,7 @@ class _AfterOpenState extends State<AfterOpen> {
                         height: MediaQuery.of(context).size.height - 431,
                         width: MediaQuery.of(context).size.width,
                         child: ListView(
+                          //myitemselected['description'].toString()
                           children: <Widget>[
                             RowTile(FontAwesomeIcons.database, 'DETAILED DESCRIPTION\n\n   '+todelstr),
                             RowTile(FontAwesomeIcons.timeline, 'UTILITY\n\n   '+todelstr),

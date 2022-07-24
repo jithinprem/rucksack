@@ -26,7 +26,7 @@ class _ProfileDetState extends State<ProfileDet> {
   FirebaseFirestore _firestore = FirebaseFirestore.instance;
   final storageRef = FirebaseStorage.instance.ref();
   XFile? image = XFile('');
-  var imgWidget =  NetworkImage('https://thumbs.dreamstime.com/b/no-image-available-icon-photo-camera-flat-vector-illustration-132483141.jpg');
+  var imgWidget =  NetworkImage('https://images.unsplash.com/photo-1658518832556-9d3fcbf51be8?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxlZGl0b3JpYWwtZmVlZHwyN3x8fGVufDB8fHx8&auto=format&fit=crop&w=500&q=60');
 
   //to get user info or uid
   final FirebaseAuth auth = FirebaseAuth.instance;
@@ -185,8 +185,8 @@ class _ProfileDetState extends State<ProfileDet> {
                               ),
                               child: TextButton(
                                 onPressed: () async{
-                                    await inputData();
-                                    UploadItem();
+                                  await inputData();
+                                  UploadItem();
                                 },
                                 child: const Text('Submit', style: TextStyle(color: Colors.white),),
                               ),

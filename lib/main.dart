@@ -36,12 +36,12 @@ class _MyAppState extends State<MyApp> {
       theme: ThemeData.dark().copyWith(
         scaffoldBackgroundColor: Colors.grey[900],
       ),
-      initialRoute: AddItem.id,
+      initialRoute: HomeScreen.id,
 
       routes: {
+        AfterOpen.id : (context) => AfterOpen(),
         RealLogin.id : (context) => RealLogin(),
         LoginScreen.id : (context) => LoginScreen(),
-        AfterOpen.id : (context) => AfterOpen(),
         UpImg.id : (context) => UpImg(),
         AddItem.id : (context) => AddItem(),
         HomeScreen.id : (context) => HomeScreen(),

@@ -46,9 +46,10 @@ class _ProfileState extends State<Profile> {
   // TODO : update the normally given uid to uid of the current user
 
   getData() async {
+    FirebaseAuth _auth = FirebaseAuth.instance;
     var searchresult = [];
     final result = await FirebaseFirestore.instance.collection('profile')
-        .where('uid', isEqualTo: 'xC2qWVuQMlQdSQ1whg5ynZfJqf52',)
+        .where('uid', isEqualTo: _auth.currentUser?.uid.toString(),)
         .get();
     searchresult = result.docs.map((e) => e.data()).toList();
     setState((){
@@ -69,38 +70,38 @@ class _ProfileState extends State<Profile> {
         appBar: AppBar(title: Text('Profile', style: TextStyle(color: Colors.black54, fontFamily: 'PressStart', fontSize: 13),), backgroundColor: bcol, leading: TextButton(child: Icon(Icons.arrow_back, color: Colors.black54,), onPressed: (){Navigator.pushNamed(context, HomeScreen.id);},),),
         body: Column(
           children: <Widget>[
-           Container(
-             decoration: BoxDecoration(
-               image: DecorationImage(
-                 image: NetworkImage('https://images.ctfassets.net/hrltx12pl8hq/5KiKmVEsCQPMNrbOE6w0Ot/341c573752bf35cb969e21fcd279d3f9/hero-img_copy.jpg?fit=fill&w=800&h=300'),
-                 fit: BoxFit.fill,
-                 colorFilter: ColorFilter.mode(Colors.black.withOpacity(0.3), BlendMode.darken)
-               )
-             ),
-             //color: Color(0xff1B2430),
-             child:  Row(
-               mainAxisAlignment: MainAxisAlignment.spaceBetween,
-               children: <Widget>[
-                 Container(
-                   margin: EdgeInsets.all(20.0),
-                   child: CircleAvatar(
-                     backgroundImage: NetworkImage(unloadedpic),
-                     radius: 60,
-                   ),
-                 ),
-                 Container(
-                   padding: EdgeInsets.only(right: 30),
-                   child: Column(
-                     children: <Widget>[
-                       Text(Gotname, style: TextStyle(color: Colors.orange, fontSize: 20, fontFamily: 'Montserrat', fontWeight: FontWeight.bold),),
-                       Text(GotBranch+' department', style: TextStyle(fontFamily: 'ZillaSlab', fontSize: 18),),
-                       Text(GotYear +'rd year', style: TextStyle(fontSize: 20, fontFamily: 'ZillaSlab'),)
-                     ],
-                   ),
-                 )
-               ],
-             ),
-           ),
+            Container(
+              decoration: BoxDecoration(
+                  image: DecorationImage(
+                      image: NetworkImage('https://images.unsplash.com/photo-1526277952-75f4fd942470?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxzZWFyY2h8NXx8Ymx1ciUyMGltYWdlfGVufDB8fDB8fA%3D%3D&auto=format&fit=crop&w=500&q=60'),
+                      fit: BoxFit.fill,
+                      colorFilter: ColorFilter.mode(Colors.black.withOpacity(0.3), BlendMode.darken)
+                  )
+              ),
+              //color: Color(0xff1B2430),
+              child:  Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: <Widget>[
+                  Container(
+                    margin: EdgeInsets.all(20.0),
+                    child: CircleAvatar(
+                      backgroundImage: NetworkImage(unloadedpic),
+                      radius: 60,
+                    ),
+                  ),
+                  Container(
+                    padding: EdgeInsets.only(right: 30),
+                    child: Column(
+                      children: <Widget>[
+                        Text(Gotname, style: TextStyle(color: Colors.white, fontSize: 20, fontFamily: 'ZillaSlab', fontWeight: FontWeight.w800),),
+                        Text(GotBranch+' department', style: TextStyle(fontFamily: 'ZillaSlab', fontSize: 18),),
+                        Text(GotYear +'rd year', style: TextStyle(fontSize: 20, fontFamily: 'ZillaSlab'),)
+                      ],
+                    ),
+                  )
+                ],
+              ),
+            ),
             ProfilePagetile('Update details',
                 'the products in your sellcart', Icons.person, (){Navigator.pushNamed(context, UpdateDetail.id);}),
             ProfilePagetile('MY SALES LIST',
@@ -121,8 +122,10 @@ class _ProfileState extends State<Profile> {
                   , child: Text('Log out'),
                 ),
                 ElevatedButton(onPressed: (){
+                  print("\nBefore homescreen\n");
                   Navigator.pushNamed(context, HomeScreen.id);
-                }
+                  print("\nAfter homescreen\n");
+                  }
                   , child: Text('Goback'),
                 ),
               ],
