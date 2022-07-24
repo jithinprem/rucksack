@@ -9,7 +9,7 @@ import 'package:rucksack/screens/homescreen.dart';
 
 var todelstr =
     'While it may not be obvious to everyone, there are a number of reasons creating random paragraphs can be useful.'
-    ' A few examples of how some people use this generator are listed in the following paragraphs.';
+    ' A few examples of how some people use this generator are listed in the ing paragraphs.';
 
 class AfterOpen extends StatefulWidget {
   var out_tags;
