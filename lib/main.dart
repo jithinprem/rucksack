@@ -39,7 +39,7 @@ class _MyAppState extends State<MyApp> {
       initialRoute: HomeScreen.id,
 
       routes: {
-        AfterOpen.id : (context) => AfterOpen(),
+        //AfterOpen.id : (context) => AfterOpen(),
         RealLogin.id : (context) => RealLogin(),
         LoginScreen.id : (context) => LoginScreen(),
         UpImg.id : (context) => UpImg(),

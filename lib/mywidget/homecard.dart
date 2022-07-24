@@ -11,9 +11,15 @@ class HomeItemTile extends StatelessWidget {
   var pic;
   var profpic;
   var price;
-  //Map arritem;
+  var longdesc;
+  var utili;
+  var tags;
+  var condition;
+  var userid; //for  contact
+  var imgs;
   IconData ic;
-  HomeItemTile(this.maintitle,this.subtitle,this.pic, this.profpic,this.price, this.ic){
+  HomeItemTile(this.maintitle,this.subtitle,this.pic, this.profpic,this.price, this.ic, this.longdesc, this.utili, this.tags, this.condition, this.userid, this.imgs){
+
   }
 
   @override
@@ -28,8 +34,7 @@ class HomeItemTile extends StatelessWidget {
       child:  Card(
         child: InkWell(
           onTap: () {
-            //Navigator.pushNamed(context, AfterOpen.id);
-            print('tapped');
+            Navigator.push(context, MaterialPageRoute(builder: (context) => AfterOpen(this.longdesc, this.tags, this.condition, this.utili, this.userid, this.imgs),));
           },
           child: Column(
             mainAxisSize: MainAxisSize.min,

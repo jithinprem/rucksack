@@ -112,8 +112,7 @@ class _HomeScreenState extends State<HomeScreen> {
                                     ),
                                   ),
                                   child: const Padding(
-                                    padding: EdgeInsets.only(
-                                        left: 17, top: 15),
+                                    padding: EdgeInsets.only(left: 17, top: 15),
                                     child: Text(
                                       'RUCKSACK, \n       Good Things Inside...',
                                       style: TextStyle(
@@ -173,35 +172,52 @@ class _HomeScreenState extends State<HomeScreen> {
                               for (int i = 0; i < itemlistreq.length; i++) {
                                 String it_name =
                                     itemlistreq[i]['name'].toString();
+
                                 String it_desc =
-                                    itemlistreq[i]['description'].toString();
-                                String it_img =
-                                    itemlistreq[i]['item_image'][0].toString();
+                                    itemlistreq[i]['shortdesc'].toString();
+                                List<String> items_images = [];
+                                for(String x in itemlistreq[i]['item_image']){
+                                  items_images.add(x.toString());
+                                }
                                 String it_price =
                                     itemlistreq[i]['price'].toString();
                                 String user_id =
                                     itemlistreq[i]['userid'].toString();
                                 String circular_profileimg =
                                     itemlistreq[i]['profile_pic'].toString();
-
+                                print(user_id);
                                 String imgid = getImgData(user_id).toString();
+                                String longdesc =
+                                    itemlistreq[i]['description'].toString();
+                                String utili =
+                                    itemlistreq[i]['utilities'].toString();
+                                String tags = itemlistreq[i]['tags'].toString();
+                                String condition = itemlistreq[i]['condition'];
                                 if (imgid.isNotEmpty) {
                                   print('we are done here');
-                                  widgetlist.add(HomeItemTile(
-                                      it_name,
-                                      it_desc,
-                                      it_img,
-                                      circular_profileimg,
-                                      it_price,
-                                      Icons.watch,
-                                      //itemlistreq[i],
-                                  ));
+                                  widgetlist.add(
+                                    HomeItemTile(
+                                        it_name,
+                                        it_desc,
+                                        items_images[0],
+                                        circular_profileimg,
+                                        it_price,
+                                        Icons.watch,
+                                        longdesc,
+                                        utili,
+                                        tags,
+                                        condition,
+                                        user_id,
+                                        items_images,
+                                        ),
+                                  );
                                 }
                               }
                               return Column(
                                 children: widgetlist,
                               );
                             }
+
                             return Text('nothing exist');
                           },
                         ),
@@ -376,7 +392,7 @@ class _SearchPageState extends State<SearchPage> {
                         );
                       }
                       if (snapshot.hasData) {
-                        var itemlistreq = [];
+                        List itemlistreq = [];
                         itemlistreq =
                             snapshot.data!.docs.map((e) => e.data()).toList();
 
@@ -385,22 +401,44 @@ class _SearchPageState extends State<SearchPage> {
                           String it_name = itemlistreq[i]['name'].toString();
                           if (it_name.contains(val)) {
                             String it_desc =
-                                itemlistreq[i]['description'].toString();
-                            String it_img =
-                                itemlistreq[i]['item_image'][0].toString();
+                                itemlistreq[i]['shortdesc'].toString();
+                            int k=0;
+                            List<String> items_images = [];
+
+                            for(String x in itemlistreq[i]['item_image']){
+                              items_images.add(x.toString());
+                            }
                             String it_price =
-                                itemlistreq[i]['price'].toString();
+                            itemlistreq[i]['price'].toString();
                             String user_id =
-                                itemlistreq[i]['userid'].toString();
+                            itemlistreq[i]['userid'].toString();
                             String circular_profileimg =
-                                itemlistreq[i]['profile_pic'].toString();
+                            itemlistreq[i]['profile_pic'].toString();
                             print(user_id);
                             String imgid = getImgData(user_id).toString();
+                            String longdesc =
+                            itemlistreq[i]['description'].toString();
+                            String utili =
+                            itemlistreq[i]['utilities'].toString();
+                            String tags = itemlistreq[i]['tags'].toString();
+                            String condition = itemlistreq[i]['condition'];
                             if (imgid.isNotEmpty) {
                               print('we are done here');
                               widgetlist.add(
-                                HomeItemTile(it_name, it_desc, it_img,
-                                    circular_profileimg, it_price, Icons.watch),
+                                HomeItemTile(
+                                  it_name,
+                                  it_desc,
+                                  items_images[0],
+                                  circular_profileimg,
+                                  it_price,
+                                  Icons.watch,
+                                  longdesc,
+                                  utili,
+                                  tags,
+                                  condition,
+                                  user_id,
+                                  items_images,
+                                ),
                               );
                             }
                           }

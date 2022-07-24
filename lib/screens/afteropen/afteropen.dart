@@ -4,21 +4,32 @@ import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:rucksack/color/colors.dart';
 import 'package:rucksack/mywidget/homecard.dart';
 import 'package:rucksack/mywidget/myiconbutton/myiconbutton.dart';
+import 'package:rucksack/screens/homescreen.dart';
+
 
 var todelstr =
     'While it may not be obvious to everyone, there are a number of reasons creating random paragraphs can be useful.'
     ' A few examples of how some people use this generator are listed in the following paragraphs.';
 
 class AfterOpen extends StatefulWidget {
+  var out_tags;
+  var out_longdesc;
+  var out_util;
+  var out_condition;
+  var out_userid;
+  List<String> out_imgs = [];
 
-  const AfterOpen({Key? key}) : super(key: key);
+  //const AfterOpen({Key? key}) : super(key: key);
   // {
   //   /*{this.selectedItem}*/
   //   // print('\n\n\n this is what we are doing\n\n\n');
   //   // print(this.selectedItem);
   //   // allimgs = selectedItem!['item_image'];
   // }
-  static String id = 'afteropen';
+  AfterOpen(this.out_longdesc, this.out_tags, this.out_condition, this.out_util, this.out_userid, this.out_imgs ){
+
+  }
+  static String id = 'afterOpen';
 
   @override
   State<AfterOpen> createState() => _AfterOpenState();
@@ -35,46 +46,27 @@ class _AfterOpenState extends State<AfterOpen> {
           children: [
             Stack(
               children: <Widget>[
-                /*
                 CarouselSlider(
-                      options: CarouselOptions(height: 400.0),
-                  items: [
-                    ListView.builder(
-                    itemCount: widget.selectedItem!['item_image']!.length,
-                    itemBuilder: (BuildContext context,index){
-                      return Container(
-                          width: MediaQuery.of(context).size.width,
-                          margin: EdgeInsets.symmetric(horizontal: 5.0),
-                          child: Image(image: NetworkImage(widget.selectedItem!['item_image'][index])),
-                      );
-                    },
-                  ),],
-
-                  //height: 280,
-                ),
-                */
-               /* CarouselSlider(
-                  options: CarouselOptions(height: 400.0,      enableInfiniteScroll: false,      autoPlay: false,
-
-                  ),
-                  items: widget.allimgs?.map((i) {
+                  options: CarouselOptions(height: 300.0,   enableInfiniteScroll: false,      autoPlay: false, aspectRatio: 23/9),
+                  items: widget.out_imgs.map((i) {
                     print("\nwidget is here rio"+i+"\n");
                     return Builder(
                       builder: (BuildContext context) {
                         return Container(
-                            width: MediaQuery.of(context).size.width,
+
+                            width: MediaQuery.of(context).size.width+80,
                             margin: EdgeInsets.symmetric(horizontal: 5.0),
                             decoration: BoxDecoration(
-                                color: Colors.amber
+                                color: Colors.black12,
                             ),
-                            child: Image(image: NetworkImage(i.toString()),),
+                            child: Image(image: NetworkImage(i.toString()), fit: BoxFit.fill,),
                         );
                       },
                     );
                   }).toList(),
                 ),
 
-                */
+
                 Container(
                   decoration: BoxDecoration(
                     borderRadius: BorderRadius.only(
@@ -107,7 +99,7 @@ class _AfterOpenState extends State<AfterOpen> {
                         children: <Widget>[
                           simpleIconButton(FontAwesomeIcons.solidHeart,
                               Colors.black54, Color(0xff69DADB), () {
-                            print('hello');
+                            print('this is the first name');
                           }, 17),
                           simpleIconButton(FontAwesomeIcons.shoppingBag,
                               Colors.black54, Color(0xff69DADB), () {
@@ -144,10 +136,10 @@ class _AfterOpenState extends State<AfterOpen> {
                         child: ListView(
                           //myitemselected['description'].toString()
                           children: <Widget>[
-                            RowTile(FontAwesomeIcons.database, 'DETAILED DESCRIPTION\n\n   '+todelstr),
-                            RowTile(FontAwesomeIcons.timeline, 'UTILITY\n\n   '+todelstr),
-                            RowTile(FontAwesomeIcons.clock, 'USAGE/ CONDITION\n\n   '+todelstr),
-                            RowTile(FontAwesomeIcons.tags, 'TAGS\n\n   '+ 'phone, android, awesome, youtube, camera'),
+                            RowTile(FontAwesomeIcons.database, 'DETAILED DESCRIPTION\n\n   '+widget.out_longdesc),
+                            RowTile(FontAwesomeIcons.timeline, 'UTILITY\n\n   '+widget.out_util),
+                            RowTile(FontAwesomeIcons.clock, 'USAGE/ CONDITION\n\n   '+widget.out_condition),
+                            RowTile(FontAwesomeIcons.tags, 'TAGS\n\n   '+ widget.out_tags),
                             SizedBox(height: 80,),
 
                           ],
