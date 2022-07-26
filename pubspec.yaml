@@ -98,7 +98,18 @@ flutter:
     - family: ZillaSlab
       fonts:
         - asset: fonts/ZillaSlab-Regular.ttf
+    - family: Google
+      fonts:
+        - asset: fonts/googlefont/ProductSans-Regular.ttf
+        - asset: fonts/googlefont/ProductSans-Bold.ttf
+    - family : Jatka
+      fonts:
+        - asset: fonts/jatka/PlusJakartaSans-VariableFont_wght.ttf
+    - family: HomemadeApple
+      fonts:
+        - asset: fonts/HomemadeApple-Regular.ttf
           #Comfortaa-VariableFont_wght Roboto-Regular
+          #Plus Jakarta Sans Regular
   # fonts:
   #   - family: Schyler
   #     fonts:

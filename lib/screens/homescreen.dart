@@ -2,16 +2,13 @@ import 'dart:async';
 import 'dart:ui';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:rucksack/color/colors.dart';
 import 'package:rucksack/mywidget/homecard.dart';
 import 'package:rucksack/screens/profilescreen.dart';
 
-// getCall() async{
-//   await Future.delayed(const Duration(seconds: 4), (){});
-//   await RetList().makedata();
-// }
-
+// get image when you give userid
 getImgData(UserUid) async {
   var searchresult = [];
   final result = await FirebaseFirestore.instance
@@ -26,10 +23,16 @@ getImgData(UserUid) async {
   return await searchresult[0]['profilepic'];
 }
 
+
+
+
 class HomeScreen extends StatefulWidget {
+
+
+
   static String id = 'homescreen';
   HomeScreen() {
-    //getCall();
+
   }
 
   @override
@@ -41,6 +44,11 @@ class _HomeScreenState extends State<HomeScreen> {
   var changeint = 0;
   var profileImg = '';
 
+  void initState() {
+    super.initState();
+    getUserName();
+  }
+
   Future<String> setprofileImg(user_id) async {
     String profileImg = await getImgData(user_id).toString();
     print('the profile image after setprofileImg is :');
@@ -48,42 +56,48 @@ class _HomeScreenState extends State<HomeScreen> {
     return profileImg;
   }
 
-  void refreshData() {
-    changeint++;
+  String Helloname = 'Loading...';
+  // get data
+  getUserName() async {
+    FirebaseAuth _auth = FirebaseAuth.instance;
+    var searchresult = [];
+    final result = await FirebaseFirestore.instance.collection('profile')
+        .where('uid', isEqualTo: _auth.currentUser?.uid.toString(),)
+        .get();
+    searchresult = result.docs.map((e) => e.data()).toList();
+    setState((){
+      Helloname = searchresult[0]['name'].toString();
+    });
   }
 
-  FutureOr onGoBack(dynamic value) {
-    refreshData();
-    setState(() {});
-  }
+
 
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      theme: ThemeData.dark().copyWith(scaffoldBackgroundColor: Colors.black87),
+      theme: ThemeData.dark().copyWith(scaffoldBackgroundColor: Color(0xff2a2a2a)),
       home: SafeArea(
         child: Scaffold(
           appBar: AppBar(
-              title: Text(
+              shadowColor: Colors.lime,
+              title: const Text(
                 'RuckSack',
                 style: TextStyle(
-                    fontFamily: 'PressStart',
-                    fontSize: 14,
-                    color: Colors.black54),
+                    fontFamily: 'Google',
+                    fontSize: 20,
+                    letterSpacing: 2.0,
+                    color: Colors.white54
+                ),
               ),
-              leading: Icon(
-                Icons.menu_rounded,
-                color: Colors.black38,
-              ),
-              backgroundColor: bcol,
+              backgroundColor: Colors.black87,
               actions: <Widget>[
                 IconButton(
-                  icon: Icon(
+                  icon: const Icon(
                     Icons.person,
-                    color: Colors.black38,
+                    color: Colors.white54,
                   ),
                   onPressed: () {
-                    Navigator.pushNamed(context, Profile.id).then(onGoBack);
+                    Navigator.pushNamed(context, Profile.id);
                   },
                 )
               ]),
@@ -92,59 +106,44 @@ class _HomeScreenState extends State<HomeScreen> {
               children: <Widget>[
                 Expanded(
                   child: ListView(padding: EdgeInsets.all(0),
-                      //children: RetList.mylist,
                       children: <Widget>[
                         Expanded(
-                          child: Stack(
-                            children: [
-                              Container(
-                                  height: 150,
-                                  width: double.infinity,
-                                  decoration: BoxDecoration(
-                                    image: DecorationImage(
-                                      image: NetworkImage(
-                                          'https://images.unsplash.com/photo-1536562833330-a59dc2305a5c?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxzZWFyY2h8MTR8fHJ1Y2tzYWNrfGVufDB8fDB8fA%3D%3D&auto=format&fit=crop&w=500&q=60'),
-                                      colorFilter: ColorFilter.mode(
-                                        Colors.black38.withOpacity(0.3),
-                                        BlendMode.darken,
-                                      ),
-                                      fit: BoxFit.fill,
-                                    ),
-                                  ),
-                                  child: const Padding(
-                                    padding: EdgeInsets.only(left: 17, top: 15),
-                                    child: Text(
-                                      'RUCKSACK, \n       Good Things Inside...',
-                                      style: TextStyle(
-                                          fontFamily: 'Comfortaa',
-                                          color: Colors.white),
-                                    ),
-                                  )),
-                              Row(
-                                mainAxisAlignment:
-                                    MainAxisAlignment.spaceEvenly,
+                            child: Container(
+                              margin: EdgeInsets.all(20),
+                              child: Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
                                 children: <Widget>[
-                                  circlenode(Icons.add_a_photo_outlined, () {
-                                    print('additem');
-                                  }),
-                                  circlenode(Icons.person, () {
-                                    print('additem');
-                                    Navigator.pushNamed(context, Profile.id)
-                                        .then(onGoBack);
-                                  }),
-                                  circlenode(Icons.location_on, () {
-                                    print('additem');
-                                  }),
-                                  circlenode(Icons.search, () {
-                                    print('additem');
-                                    Navigator.of(context).push(
-                                        MaterialPageRoute(
-                                            builder: (_) =>
-                                                const SearchPage()));
-                                  }),
+                                  Text('Hello $Helloname', style: TextStyle(color: Colors.white54, fontFamily: 'Google', fontSize: 30),),
+                                  Text('welcome to rucksack',style: TextStyle(color: Colors.white54, fontFamily: 'Google', fontSize: 13),)
                                 ],
                               ),
-                            ],
+                            )
+                        ),
+                        Expanded(
+                          child: Container(
+                            height: 180,
+                            child: ListView(
+                              scrollDirection: Axis.horizontal,
+                              children: [
+                                circlenode(Icons.add_a_photo_outlined, () {
+                                  print('additem');
+                                }, Color(0xffc0dedd), 'Add item'),
+                                circlenode(Icons.person, () {
+                                  print('additem');
+                                  Navigator.pushNamed(context, Profile.id);
+                                }, Color(0xffe6dff1), 'Profile'),
+                                circlenode(Icons.local_fire_department_rounded, () {
+                                  print('additem');
+                                }, Color(0xfff1dfde), 'Trending'),
+                                circlenode(Icons.search, () {
+                                  print('additem');
+                                  Navigator.of(context).push(
+                                      MaterialPageRoute(
+                                          builder: (_) =>
+                                              const SearchPage()));
+                                }, Color(0xfff2eee9), 'Search'),
+                              ],
+                            ),
                           ),
                         ),
                         const SizedBox(
@@ -235,77 +234,38 @@ class _HomeScreenState extends State<HomeScreen> {
 class circlenode extends StatelessWidget {
   var circleicon;
   var circlefunc;
-  circlenode(this.circleicon, this.circlefunc) {}
+  var col;
+  var title;
+  circlenode(this.circleicon, this.circlefunc, this.col, this.title) {}
 
   @override
   Widget build(BuildContext context) {
     return TextButton(
+      onPressed: circlefunc,
       child: Container(
-        margin: EdgeInsets.only(top: 110),
-        child: CircleAvatar(
-          child: Icon(
-            circleicon,
-            color: Colors.grey[800],
-          ),
-          radius: 30,
-          backgroundColor: Color(0xFFEFE7E2),
+        decoration: BoxDecoration(
+          color: col,
+          borderRadius: BorderRadius.circular(30),
+        ),
+        height: 140,
+        width: 100,
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: <Widget>[
+            Icon(circleicon, color: Colors.black54, size: 32,),
+            SizedBox(
+              height: 20,
+            ),
+            Center(
+              child:Text(title, style: TextStyle(fontFamily: 'Google', fontSize: 14, letterSpacing: 1.1, color: Colors.black),),
+            ),
+          ],
         ),
       ),
-      onPressed: circlefunc,
     );
   }
 }
 
-// class RetList {
-//
-//
-//   List det_item = [];
-//   var details;
-//   static List<Widget> mylist = [];
-//
-//
-//   FirebaseFirestore _firestore = FirebaseFirestore.instance;
-//   Future<List> getData() async {
-//
-//     final items = await _firestore
-//         .collection('allitems')
-//         .limit(5)
-//         .get()
-//         .then((QuerySnapshot querySnapshot) {
-//       querySnapshot.docs.forEach((doc) {
-//         details = {
-//           'it_description': doc['description'],
-//           'it_id': doc['id'],
-//           'it_name': doc['name'],
-//           'it_price': doc['price'],
-//           'it_tags': doc['tags'],
-//           'it_userid' : doc['userid'],
-//           'it_item_image' : doc['item_image'][0],
-//         };
-//         this.det_item.add(details);
-//       });
-//     });
-//
-//     return this.det_item;
-//   }
-//
-//
-//
-//   Future<List<Widget>> makedata() async{
-//
-//     List<Widget> list = [];
-//     var profileImg = await getImgData('xC2qWVuQMlQdSQ1whg5ynZfJqf52');
-//     await getData();
-//     mylist = [];
-//     for (int i = 0; i < this.det_item.length; i++) {
-//       mylist.add(
-//         HomeItemTile(this.det_item[i]['it_name'], this.det_item[i]['it_description'], this.det_item[i]['it_item_image'], profileImg,
-//             this.det_item[i]['it_price'], Icons.watch),
-//       ); //add any Widget in place of Text("Index $i")
-//     }
-//     return mylist; // all widget added now retrun the list here
-//   }
-// }
 
 // Search Page
 class SearchPage extends StatefulWidget {
@@ -321,6 +281,7 @@ class _SearchPageState extends State<SearchPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: Color(0xff2a2a2a),
       appBar: AppBar(
           // The search area here
           automaticallyImplyLeading: false,
