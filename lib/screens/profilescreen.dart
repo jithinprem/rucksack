@@ -113,17 +113,20 @@ class _ProfileState extends State<Profile> {
             ),
 
             ProfilePagetile(
-                'SALE LIST', 'the products in your sellcart', Icons.sell,
+                'SALE LIST', 'check your products', Icons.sell,
                 () {
               Navigator.pushNamed(context, SalesList.id);
             }),
-            ProfilePagetile('MY ORDERS', 'the products in your sellcart',
-                Icons.shopping_cart, () {
-              Navigator.pushNamed(context, MyOrder.id);
-            }),
-            ProfilePagetile('WISHLIST', 'the products in your sellcart',
+            // ProfilePagetile('MY ORDERS', 'your purchases ',
+            //     Icons.shopping_cart, () {
+            //   Navigator.pushNamed(context, MyOrder.id);
+            // }),
+            ProfilePagetile('WISHLIST', 'check wishlisted products',
                 Icons.heart_broken, printhello),
             ProfilePagetile('ADD ITEM', 'start earning 💸', Icons.comment, () {
+              Navigator.pushNamed(context, AddItem.id);
+            }),
+            ProfilePagetile('ABOUT US', 'developers', Icons.comment, () {
               Navigator.pushNamed(context, AddItem.id);
             }),
             SizedBox(

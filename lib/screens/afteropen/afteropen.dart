@@ -6,7 +6,6 @@ import 'package:rucksack/mywidget/homecard.dart';
 import 'package:rucksack/mywidget/myiconbutton/myiconbutton.dart';
 import 'package:rucksack/screens/homescreen.dart';
 
-
 var todelstr =
     'While it may not be obvious to everyone, there are a number of reasons creating random paragraphs can be useful.'
     ' A few examples of how some people use this generator are listed in the ing paragraphs.';
@@ -17,6 +16,7 @@ class AfterOpen extends StatefulWidget {
   var out_util;
   var out_condition;
   var out_userid;
+  var item_name;
   List<String> out_imgs = [];
 
   //const AfterOpen({Key? key}) : super(key: key);
@@ -26,9 +26,8 @@ class AfterOpen extends StatefulWidget {
   //   // print(this.selectedItem);
   //   // allimgs = selectedItem!['item_image'];
   // }
-  AfterOpen(this.out_longdesc, this.out_tags, this.out_condition, this.out_util, this.out_userid, this.out_imgs ){
-
-  }
+  AfterOpen(this.item_name, this.out_longdesc, this.out_tags,
+      this.out_condition, this.out_util, this.out_userid, this.out_imgs) {}
   static String id = 'afterOpen';
 
   @override
@@ -38,121 +37,165 @@ class AfterOpen extends StatefulWidget {
 class _AfterOpenState extends State<AfterOpen> {
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      theme: ThemeData.dark(),
-      home: SafeArea(
-          child: Scaffold(
-        body: Column(
-          children: [
-            Stack(
-              children: <Widget>[
-                CarouselSlider(
-                  options: CarouselOptions(height: 300.0,   enableInfiniteScroll: false,      autoPlay: false, aspectRatio: 23/9),
-                  items: widget.out_imgs.map((i) {
-                    print("\nwidget is here rio"+i+"\n");
-                    return Builder(
-                      builder: (BuildContext context) {
-                        return Container(
-
-                            width: MediaQuery.of(context).size.width+80,
+    return WillPopScope(
+      onWillPop: () async {
+        print("the back button was pressed");
+        Navigator.push(
+            context,
+            MaterialPageRoute(
+                builder: (context) => HomeScreen())
+        );
+        return true;
+      },
+      child: MaterialApp(
+        theme: ThemeData.dark(),
+        home: SafeArea(
+            child: Scaffold(
+          appBar: AppBar(
+            shadowColor: Colors.lime,
+            title: const Text(
+              'RuckSack',
+              style: TextStyle(
+                  fontFamily: 'Google',
+                  fontSize: 20,
+                  letterSpacing: 2.0,
+                  color: Colors.white54),
+            ),
+            backgroundColor: Colors.black87,
+            leading: IconButton(
+              icon: Icon(Icons.arrow_back),
+              onPressed: () {
+                Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) => HomeScreen())
+                );
+              },
+            ),
+          ),
+          body: Column(
+            children: [
+              Stack(
+                children: <Widget>[
+                  CarouselSlider(
+                    options: CarouselOptions(
+                        height: 300.0,
+                        enableInfiniteScroll: false,
+                        autoPlay: false,
+                        aspectRatio: 23 / 9),
+                    items: widget.out_imgs.map((i) {
+                      print("\nwidget is here rio" + i + "\n");
+                      return Builder(
+                        builder: (BuildContext context) {
+                          return Container(
+                            width: MediaQuery.of(context).size.width + 80,
                             margin: EdgeInsets.symmetric(horizontal: 5.0),
                             decoration: BoxDecoration(
-                                color: Colors.black12,
+                              color: Colors.black12,
                             ),
-                            child: Image(image: NetworkImage(i.toString()), fit: BoxFit.fill,),
-                        );
-                      },
-                    );
-                  }).toList(),
-                ),
-
-
-                Container(
-                  decoration: BoxDecoration(
-                    borderRadius: BorderRadius.only(
-                        topLeft: Radius.circular(25),
-                        topRight: Radius.circular(25)),
-                    color: Color(0xff2C3333),
-                    //color: Colors.white,
+                            child: Image(
+                              image: NetworkImage(i.toString()),
+                              fit: BoxFit.fill,
+                            ),
+                          );
+                        },
+                      );
+                    }).toList(),
                   ),
-                  margin: EdgeInsets.only(top: 230),
-                  height: 600 - 114,
-                  width: double.infinity,
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: <Widget>[
-                      Container(
-                        margin: EdgeInsets.only(top: 30, left: 20, bottom: 10),
-                        child: Text(
-                          'RuckSack ',
-                          style: TextStyle(
-                            color: Colors.white,
-                            fontSize: 14,
-                            fontFamily: 'PressStart',
-                            //backgroundColor: Colors.black54,
-                            letterSpacing: 1.8,
-                          ),
-                        ),
+                  Expanded(
+                    child: Container(
+                      decoration: const BoxDecoration(
+                        borderRadius: BorderRadius.only(
+                            topLeft: Radius.circular(25),
+                            topRight: Radius.circular(25)),
+                        color: Color(0xff2C3333),
+                        //color: Colors.white,
                       ),
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceAround,
-                        children: <Widget>[
-                          simpleIconButton(FontAwesomeIcons.solidHeart,
-                              Colors.black54, Color(0xff69DADB), () {
-                            print('this is the first name');
-                          }, 17),
-                          simpleIconButton(FontAwesomeIcons.shoppingBag,
-                              Colors.black54, Color(0xff69DADB), () {
-                            print('hello');
-                          }, 17),
-                          simpleIconButton(FontAwesomeIcons.phone,
-                              Colors.black54, Color(0xff69DADB), () {
-                            print('hello');
-                          }, 17),
-                          simpleIconButton(FontAwesomeIcons.paperclip,
-                              Colors.black54, Color(0xff69DADB), () {
-                            print('hello');
-                          }, 17),
-                        ],
-                      ),
-                      Row(
-                        children: <Widget>[
-                          Container(
-                              margin: EdgeInsets.only(left: 18, top: 12, bottom: 8),
-                              child: Text(
-                                '🍃 Overview',
-                                style: TextStyle(
-                                    fontSize: 20,
-                                    fontFamily: 'Comfortaa',
-                                    fontWeight: FontWeight.w900,
-                                    color: Colors.white54,
-                                    letterSpacing: 1.3),
-                              )),
-                        ],
-                      ),
-                      Container(
-                        height: MediaQuery.of(context).size.height - 431,
-                        width: MediaQuery.of(context).size.width,
-                        child: ListView(
-                          //myitemselected['description'].toString()
+                      margin: EdgeInsets.only(top: 230),
+                      height: 600 - 174,
+                      width: double.infinity,
+                      child: Expanded(
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
                           children: <Widget>[
-                            RowTile(FontAwesomeIcons.database, 'DETAILED DESCRIPTION\n\n   '+widget.out_longdesc),
-                            RowTile(FontAwesomeIcons.timeline, 'UTILITY\n\n   '+widget.out_util),
-                            RowTile(FontAwesomeIcons.clock, 'USAGE/ CONDITION\n\n   '+widget.out_condition),
-                            RowTile(FontAwesomeIcons.tags, 'TAGS\n\n   '+ widget.out_tags),
-                            SizedBox(height: 80,),
-
+                            Expanded(
+                              child: Container(
+                                margin: EdgeInsets.only(
+                                  top: 10,
+                                  left: 20,
+                                ),
+                                child: Text(
+                                  widget.item_name,
+                                  style: TextStyle(
+                                    color: Colors.white,
+                                    fontSize: 18,
+                                    fontFamily: 'Google',
+                                    //backgroundColor: Colors.black54,
+                                    letterSpacing: 1.8,
+                                  ),
+                                ),
+                              ),
+                            ),
+                            Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceAround,
+                              children: <Widget>[
+                                simpleIconButton(FontAwesomeIcons.solidHeart,
+                                    Colors.black54, Color(0xff69DADB), () {
+                                  print('this is the first name');
+                                }, 17),
+                                simpleIconButton(FontAwesomeIcons.phone,
+                                    Colors.black54, Color(0xff69DADB), () {
+                                  print('hello');
+                                }, 17),
+                              ],
+                            ),
+                            Container(
+                                margin: EdgeInsets.only(
+                                    left: 18, top: 12, bottom: 8),
+                                child: const Text(
+                                  '🍃 Overview',
+                                  style: TextStyle(
+                                      fontSize: 20,
+                                      fontFamily: 'Comfortaa',
+                                      fontWeight: FontWeight.w900,
+                                      color: Colors.white54,
+                                      letterSpacing: 1.3),
+                                )),
+                            Container(
+                              height: MediaQuery.of(context).size.height - 481,
+                              width: MediaQuery.of(context).size.width,
+                              child: ListView(
+                                //myitemselected['description'].toString()
+                                children: <Widget>[
+                                  RowTile(
+                                      FontAwesomeIcons.database,
+                                      'DETAILED DESCRIPTION\n\n   ' +
+                                          widget.out_longdesc),
+                                  RowTile(FontAwesomeIcons.timeline,
+                                      'UTILITY\n\n   ' + widget.out_util),
+                                  RowTile(
+                                      FontAwesomeIcons.clock,
+                                      'USAGE/ CONDITION\n\n   ' +
+                                          widget.out_condition),
+                                  RowTile(FontAwesomeIcons.tags,
+                                      'TAGS\n\n   ' + widget.out_tags),
+                                  SizedBox(
+                                    height: 80,
+                                  ),
+                                ],
+                              ),
+                            ),
                           ],
                         ),
                       ),
-                    ],
+                    ),
                   ),
-                ),
-              ],
-            ),
-          ],
-        ),
-      )),
+                ],
+              ),
+            ],
+          ),
+        )),
+      ),
     );
   }
 }
@@ -183,8 +226,7 @@ class RowTile extends StatelessWidget {
           width: MediaQuery.of(context).size.width - 110,
           child: Text(
             txt,
-            style: TextStyle(
-                fontFamily: 'Roboto', fontWeight: FontWeight.w200),
+            style: TextStyle(fontFamily: 'Roboto', fontWeight: FontWeight.w200),
           ),
         ),
       ],
