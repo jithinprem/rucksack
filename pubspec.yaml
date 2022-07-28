@@ -117,6 +117,10 @@ flutter:
     - family: HomemadeApple
       fonts:
         - asset: fonts/HomemadeApple-Regular.ttf
+    - family: Allura
+      fonts:
+        - asset: fonts/Allura-Regular.ttf
+
           #Comfortaa-VariableFont_wght Roboto-Regular
           #Plus Jakarta Sans Regular
   # fonts:

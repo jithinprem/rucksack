@@ -82,6 +82,12 @@ class _AfterOpenState extends State<AfterOpen> {
       }
     ).then((_) => print('hellomywish'));
 
+    _firestore.collection('allitems').doc(widget.out_documentid).update(
+        {
+          'wishcount' : FieldValue.increment(1)
+        }
+    ).then((value) => print('incremented'));
+
   }
   removeWishlist(){
     _firestore.collection("profile").doc(currUsername).update(
@@ -89,6 +95,12 @@ class _AfterOpenState extends State<AfterOpen> {
           'witem' : FieldValue.arrayRemove([widget.out_documentid])
         }
     ).then((_) => print('hellomywish'));
+
+    _firestore.collection('allitems').doc(widget.out_documentid).update(
+      {
+        'wishcount' : FieldValue.increment(-1)
+      }
+    ).then((value) => print('decremented'));
   }
 
   getCurrentWishStatus() async{

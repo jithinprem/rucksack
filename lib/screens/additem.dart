@@ -183,6 +183,7 @@ class _AddItemState extends State<AddItem> {
         'item_image': dfiles,
         'profile_pic': profilePicUrl,
         'time' : FieldValue.serverTimestamp(),
+        'wishcount' : 0,
       });
       Navigator.pop(context);
     }
@@ -201,20 +202,22 @@ class _AddItemState extends State<AddItem> {
           body: ModalProgressHUD(
             inAsyncCall: boolval,
             child: Container(
+              margin: EdgeInsets.only(left: 10, right: 10, bottom: 10),
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.start,
                 children: <Widget>[
                   ListTile(
-                    leading: FaIcon(FontAwesomeIcons.faceSmileWink, color: Color(0xffFF869E), size: 30,),
-                    title: Text('Hi, ' + userName, style: TextStyle(fontSize: 20, color: Colors.black54, fontFamily: 'Montserrat', fontWeight: FontWeight.w700),),
-                    subtitle: Text('        we are happy to recieve your item', style: TextStyle(color: Colors.black, fontFamily: 'ZillaSlab'),),
-                    tileColor: Color(0xFFEFE7E2),
+                    leading: FaIcon(FontAwesomeIcons.faceSmileWink, color: Color(0xffe8db90), size: 30,),
+                    title: Text('Hi, ' + userName, style: TextStyle(fontSize: 20, color: Colors.white70, fontFamily: 'Google', fontWeight: FontWeight.w700),),
+                    subtitle: Text('        we are happy to recieve your item', style: TextStyle(color: Colors.white, fontFamily: 'Google'),),
+                    // tileColor: Color(0xFFEFE7E2),
+                    tileColor: Colors.black54,
                   ),
                   SizedBox(
                     height: 22,
                   ),
                   Expanded(
-                    flex: 4,
+                    flex: 10,
                     child: ListView(
                       children: <Widget>[
                         Column(
@@ -291,11 +294,10 @@ class _AddItemState extends State<AddItem> {
                     ),
                   ),
                   Expanded(
+                    flex: 3,
                     child: Container(
-
                       decoration: BoxDecoration(
                         borderRadius: BorderRadius.circular(20),
-                        //color: bcol,
                       ),
                       child: Row(
                         mainAxisAlignment: MainAxisAlignment.spaceAround,
@@ -306,6 +308,7 @@ class _AddItemState extends State<AddItem> {
                               width: 80,
                               decoration: BoxDecoration(
                                   color: Colors.black,
+                                  borderRadius: BorderRadius.circular(20),
                                   image: DecorationImage(
                                       image: imgWidget1, fit: BoxFit.cover)
                               ),
@@ -331,6 +334,7 @@ class _AddItemState extends State<AddItem> {
                               height: 80,
                               width: 80,
                               decoration: BoxDecoration(
+                                  borderRadius: BorderRadius.circular(20),
                                   color: Colors.black,
                                   image: DecorationImage(
                                       image: imgWidget2, fit: BoxFit.cover)
@@ -347,6 +351,7 @@ class _AddItemState extends State<AddItem> {
                               height: 80,
                               width: 80,
                               decoration: BoxDecoration(
+                                  borderRadius: BorderRadius.circular(20),
                                   color: Colors.black,
                                   image: DecorationImage(
                                       image: imgWidget3, fit: BoxFit.cover)
@@ -363,25 +368,35 @@ class _AddItemState extends State<AddItem> {
                     ),
                   ),
                   Expanded(
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                      children: <Widget>[
-                        //ElevatedButton(onPressed: (){selectAndUpload('items');}, child: Text('Photo'),),
-                        ElevatedButton(
-                          onPressed: () {
-                            getProfilepic();
-                          },
-                          child: Text('Photo'),
-                        ),
-                        ElevatedButton(
-                          onPressed: () {
+                    flex: 1,
+                    child: Container(
+                      // child: ElevatedButton(
+                      //   onPressed: () {
+                      //     UploadItem();
+                      //   },
+                      //   child: Text('Add', style: TextStyle(fontFamily: 'Google', color: Colors.black54),),
+                      //   style: ButtonStyle(
+                      //     backgroundColor:  MaterialStateProperty.all<Color>(Color(0xffe8db90))
+                      //   ),
+                      // ),
+                        child : ElevatedButton(
+                          onPressed: () async {
                             UploadItem();
                           },
-                          child: Text('Add'),
-                        ),
-                      ],
+                          child: Container(
+                            decoration: BoxDecoration(
+                              borderRadius: BorderRadius.circular(20),
+                            ),
+                            child: Center(child: Text('Add Item', style: TextStyle(color: Colors.black54, fontFamily: 'Google', fontWeight: FontWeight.bold),)),
+                            height: 50,
+                            width: 120,
+                          ),
+                          style: ButtonStyle(
+                              backgroundColor: MaterialStateProperty.all<Color>(Color(0xffe8db90))),
+                        )
                     ),
                   ),
+
                 ],
               ),
             ),
@@ -408,6 +423,10 @@ class TextF extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
+      decoration: BoxDecoration(
+        borderRadius: BorderRadius.circular(15),
+        color: Colors.black38,
+      ),
       margin: EdgeInsets.only(top: 5, bottom: 5),
       child: TextField(
         minLines: minlin,

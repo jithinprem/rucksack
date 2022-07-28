@@ -7,6 +7,7 @@ import 'package:flutter/material.dart';
 import 'package:rucksack/color/colors.dart';
 import 'package:rucksack/mywidget/homecard.dart';
 import 'package:rucksack/screens/profilescreen.dart';
+import 'package:rucksack/screens/trending.dart';
 
 import 'additem.dart';
 
@@ -135,6 +136,7 @@ class _HomeScreenState extends State<HomeScreen> {
                               }, Color(0xffe6dff1), 'Profile'),
                               circlenode(Icons.local_fire_department_rounded, () {
                                 print('additem');
+                                Navigator.pushNamed(context, Trending.id);
                               }, Color(0xfff1dfde), 'Trending'),
                               circlenode(Icons.search, () {
                                 print('additem');

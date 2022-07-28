@@ -15,6 +15,7 @@ import 'package:rucksack/screens/profile/update.dart';
 import 'package:rucksack/screens/profile/wishlist.dart';
 import 'package:rucksack/screens/profilescreen.dart';
 import 'package:rucksack/screens/additem.dart';
+import 'package:rucksack/screens/trending.dart';
 
 void main() async{
   WidgetsFlutterBinding.ensureInitialized();
@@ -40,6 +41,7 @@ class _MyAppState extends State<MyApp> {
 
       routes: {
         //AfterOpen.id : (context) => AfterOpen(),
+        Trending.id : (context) => Trending(),
         WishList.id : (context) => WishList(),
         RealLogin.id : (context) => RealLogin(),
         LoginScreen.id : (context) => LoginScreen(),
