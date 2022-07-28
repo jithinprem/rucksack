@@ -18,6 +18,7 @@ class HomeItemTile extends StatelessWidget {
   var condition;
   var userid; //for  contact
   var imgs;
+  var documentid;
   IconData ic;
   HomeItemTile(
       this.maintitle,
@@ -31,7 +32,8 @@ class HomeItemTile extends StatelessWidget {
       this.tags,
       this.condition,
       this.userid,
-      this.imgs) {}
+      this.imgs,
+      this.documentid) {}
 
   @override
   Widget build(BuildContext context) {
@@ -50,7 +52,7 @@ class HomeItemTile extends StatelessWidget {
                 context,
                 MaterialPageRoute(
                   builder: (context) => AfterOpen(this.maintitle, this.longdesc, this.tags,
-                      this.condition, this.utili, this.userid, this.imgs),
+                      this.condition, this.utili, this.userid, this.imgs, this.documentid),
                 ));
           },
           onLongPress: () {
@@ -83,9 +85,9 @@ class HomeItemTile extends StatelessWidget {
                       TextButton(
                         child: const Text('Yes'),
                         onPressed: () async {
-                          // CollectionReference collectionReference = FirebaseFirestore.instance.collection("allitems");
-                          // await collectionReference.doc()
-                          /// TODO wirte a fucntion to delete the tile
+                          CollectionReference collectionReference = FirebaseFirestore.instance.collection("allitems");
+                          collectionReference..doc(documentid).delete();
+                          Navigator.pop(context);
                         }
                       ),
                     ],
@@ -169,7 +171,14 @@ class HomeItemTile extends StatelessWidget {
                                 color: Colors.white54),
                           ),
                           Text(
-                            '\n' + price,
+                            '\n ₹  ',
+                            style: TextStyle(
+                                fontFamily: 'Google',
+                                fontSize: 25,
+                                color: Colors.lime),
+                          ),
+                          Text(
+                            price,
                             style: TextStyle(
                                 fontFamily: 'Jatka',
                                 fontSize: 45,

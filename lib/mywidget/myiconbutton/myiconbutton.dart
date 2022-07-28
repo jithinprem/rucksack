@@ -15,10 +15,10 @@ class simpleIconButton extends StatelessWidget {
   Widget build(BuildContext context) {
     return TextButton(
       child: Container(
-        height: 55,
-        width: 55,
+        height: 85,
+        width: 85,
         decoration: BoxDecoration(
-          borderRadius: BorderRadius.all(Radius.circular(9)),
+          borderRadius: BorderRadius.all(Radius.circular(30)),
           color: boxColor,
         ),
         child: Icon(boxicon, color: iconColor, size: size,),

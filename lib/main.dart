@@ -12,7 +12,6 @@ import 'package:rucksack/screens/profile/broughtlist.dart';
 import 'package:rucksack/screens/profile/logfirst.dart';
 import 'package:rucksack/screens/profile/saleslist.dart';
 import 'package:rucksack/screens/profile/update.dart';
-import 'package:rucksack/screens/profile/wishlist.dart';
 import 'package:rucksack/screens/profilescreen.dart';
 import 'package:rucksack/screens/additem.dart';
 
@@ -51,7 +50,6 @@ class _MyAppState extends State<MyApp> {
         UpdateDetail.id : (context) => UpdateDetail(),
         SalesList.id : (context) => SalesList(),
         MyOrder.id : (context) => MyOrder(),
-        WishList.id :(context) => WishList(),
         ProfileDet.id :(context) => ProfileDet(),
       },
     );

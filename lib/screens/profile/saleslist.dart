@@ -99,6 +99,7 @@ class _SalesListState extends State<SalesList> {
                                 condition,
                                 user_id,
                                 items_images,
+                                'this is dummy string.. you should pass document id',
                               ),
                             );
                           }

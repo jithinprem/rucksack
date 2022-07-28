@@ -15,7 +15,11 @@ import '../../functions/upImage.dart';
 
 class ProfileDet extends StatefulWidget {
   static String id = 'profiledet';
-  const ProfileDet({Key? key}) : super(key: key);
+  User? user;
+  ProfileDet(){
+    final FirebaseAuth auth = FirebaseAuth.instance;
+    user = auth.currentUser;
+  }
 
   @override
   State<ProfileDet> createState() => _ProfileDetState();
@@ -32,8 +36,7 @@ class _ProfileDetState extends State<ProfileDet> {
   final FirebaseAuth auth = FirebaseAuth.instance;
   var uid;
   inputData() {
-    final User? user = auth.currentUser;
-    uid = user?.uid;
+    uid = widget.user?.uid;
     // here you write the codes to input the data into firestore
   }
 
@@ -95,10 +98,11 @@ class _ProfileDetState extends State<ProfileDet> {
     var personname = nameController.text;
     var personaddress = addressController.text;
     var mobno = contactController.text;
+    List <String> wishitems = [];
 
     if(personname != Null && personaddress != Null && mobno != Null) {
       print('uploading is being performed......................');
-      DocumentReference ref = await _firestore.collection('profile').add({
+      await _firestore.collection('profile').doc(widget.user?.email.toString()).set({
         'address': personaddress,
         'contact': mobno,
         'name': personname,
@@ -107,6 +111,7 @@ class _ProfileDetState extends State<ProfileDet> {
         'year' : D3.mystr,
         'uid' : uid,
         'profilepic': dfileUrl,
+        'witem' : wishitems,
       });
       Navigator.pushNamed(context, HomeScreen.id);
     }

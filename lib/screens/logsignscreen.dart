@@ -16,16 +16,7 @@ class LogSignScreen extends StatefulWidget {
 }
 
 class _LogSignScreenState extends State<LogSignScreen> {
-  void _showToast(BuildContext context) {
-    final scaffold = ScaffoldMessenger.of(context);
-    scaffold.showSnackBar(
-      SnackBar(
-        content: const Text('Added to favorite'),
-        action: SnackBarAction(
-            label: 'UNDO', onPressed: scaffold.hideCurrentSnackBar),
-      ),
-    );
-  }
+
 
   final _auth = FirebaseAuth.instance; //final because im never gonna change it once i have created it also making it private so that other classes cannot mess with it.
   bool showSpinner = false;
@@ -42,13 +33,14 @@ class _LogSignScreenState extends State<LogSignScreen> {
           constraints: const BoxConstraints.expand(),
           decoration: const BoxDecoration(
               image: DecorationImage(
-                  image: AssetImage("images/women.jpg"), fit: BoxFit.cover)
+                  image: AssetImage("images/knot.gif"), fit: BoxFit.cover)
           ),
           child: Scaffold(
             resizeToAvoidBottomInset: false,
             backgroundColor: Colors.transparent,
             appBar: AppBar(
-              backgroundColor: Colors.black54,
+              backgroundColor: Colors.black87,
+              shadowColor: Colors.lime,
               leading: Icon(Icons.shopping_cart),
               title: Text('log in/ sign up', style: TextStyle(fontFamily: 'ZillaSlab', fontSize: 25),),
             ),
@@ -69,14 +61,14 @@ class _LogSignScreenState extends State<LogSignScreen> {
                         margin: EdgeInsets.only(left: 15, right: 15, top: 40),
                         padding: EdgeInsets.only(left: 20),
                         decoration: const BoxDecoration(
-                          color: Colors.black54,
+                          color: Colors.white24,
                           borderRadius: BorderRadius.all(Radius.circular(30)),
                         ),
                         child: TextField(
                           controller: nameController,
                           decoration: const InputDecoration(
                               border: InputBorder.none, hintText: 'Username'),
-                          style: const TextStyle(color: Colors.white, fontFamily: 'Readex'),
+                          style: const TextStyle(color: Colors.white, fontFamily: 'Google'),
                         ),
                       ),
                     ),
@@ -86,7 +78,7 @@ class _LogSignScreenState extends State<LogSignScreen> {
                         margin: EdgeInsets.only(left: 15, right: 15, top: 10),
                         padding: EdgeInsets.only(left: 20),
                         decoration: const BoxDecoration(
-                          color: Colors.black54,
+                          color: Colors.white24,
                           borderRadius: BorderRadius.all(Radius.circular(30)),
                         ),
                         child: TextField(
@@ -94,7 +86,7 @@ class _LogSignScreenState extends State<LogSignScreen> {
                           decoration: const InputDecoration(
                               border: InputBorder.none, hintText: 'Password'),
                           obscureText: true,
-                          style: const TextStyle(color: Colors.white, fontFamily: 'Readex'),
+                          style: const TextStyle(color: Colors.white, fontFamily: 'Google'),
                         ),
                       ),
                     ),
@@ -137,10 +129,11 @@ class _LogSignScreenState extends State<LogSignScreen> {
                                 await _auth.createUserWithEmailAndPassword(
                                     email: nameController.text,
                                     password: passwordController.text);
+                            print('welcome to new screen');
                             Navigator.pushNamed(context, EmailVerify.id);
                             print('new user created');
                           } else {
-                            _showToast(context);
+                            print("error");
                           }
                         },
                         child: Container(

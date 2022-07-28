@@ -1,10 +1,14 @@
 import 'package:carousel_slider/carousel_slider.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:rucksack/color/colors.dart';
 import 'package:rucksack/mywidget/homecard.dart';
 import 'package:rucksack/mywidget/myiconbutton/myiconbutton.dart';
 import 'package:rucksack/screens/homescreen.dart';
+import 'package:rucksack/screens/profile/saleslist.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 var todelstr =
     'While it may not be obvious to everyone, there are a number of reasons creating random paragraphs can be useful.'
@@ -17,6 +21,7 @@ class AfterOpen extends StatefulWidget {
   var out_condition;
   var out_userid;
   var item_name;
+  String out_documentid;
   List<String> out_imgs = [];
 
   //const AfterOpen({Key? key}) : super(key: key);
@@ -27,7 +32,7 @@ class AfterOpen extends StatefulWidget {
   //   // allimgs = selectedItem!['item_image'];
   // }
   AfterOpen(this.item_name, this.out_longdesc, this.out_tags,
-      this.out_condition, this.out_util, this.out_userid, this.out_imgs) {}
+      this.out_condition, this.out_util, this.out_userid, this.out_imgs, this.out_documentid) {}
   static String id = 'afterOpen';
 
   @override
@@ -35,20 +40,72 @@ class AfterOpen extends StatefulWidget {
 }
 
 class _AfterOpenState extends State<AfterOpen> {
+
+  void initState(){
+    getPhoneNumber(widget.out_userid);
+  }
+
+  String myphoneNo = 'xxxxxxxxx';
+
+  _launchPhoneURL(String phoneNumber) async {
+    String number = phoneNumber;
+    if (await canLaunchUrl(
+        Uri(scheme: 'tel', path: number))) {
+      await launchUrl(
+          Uri(scheme: 'tel', path: number));
+    } else {
+      throw 'Could not launch $number';
+    }
+  }
+
+  getPhoneNumber(String my_uid) async {
+    var searchresult = [];
+    final result = await FirebaseFirestore.instance
+        .collection('profile')
+        .where(
+      'uid',
+      isEqualTo: my_uid,
+    ).get();
+    searchresult = result.docs.map((e) => e.data()).toList();
+    setState(() {
+      myphoneNo = searchresult[0]['contact'].toString();
+    });
+  }
+
+  addWishlist(){
+    FirebaseAuth _auth = FirebaseAuth.instance;
+    FirebaseFirestore _firestore = FirebaseFirestore.instance;
+    String? currUsername = _auth.currentUser?.email.toString();
+    print(currUsername);
+    _firestore.collection("profile").doc(currUsername).update(
+      {
+        'witem' : FieldValue.arrayUnion([widget.out_documentid])
+      }
+    ).then((_) => print('hellomywish'));
+    // where(
+    //   'uid',
+    //   isEqualTo: _auth.currentUser?.uid.toString(),
+    // ).add();
+
+  }
+
+
   @override
   Widget build(BuildContext context) {
+
     return WillPopScope(
       onWillPop: () async {
         print("the back button was pressed");
-        Navigator.push(
-            context,
-            MaterialPageRoute(
-                builder: (context) => HomeScreen())
-        );
+        // Navigator.push(
+        //     context,
+        //     MaterialPageRoute(
+        //         builder: (context) => HomeScreen())
+        // );
+        Navigator.pop(context);
         return true;
       },
       child: MaterialApp(
-        theme: ThemeData.dark(),
+        theme: ThemeData.dark().copyWith(scaffoldBackgroundColor: Color(0xff2a2a2a)),
         home: SafeArea(
             child: Scaffold(
           appBar: AppBar(
@@ -93,9 +150,12 @@ class _AfterOpenState extends State<AfterOpen> {
                             decoration: BoxDecoration(
                               color: Colors.black12,
                             ),
-                            child: Image(
-                              image: NetworkImage(i.toString()),
-                              fit: BoxFit.fill,
+                            child: ClipRRect(
+                              borderRadius: BorderRadius.circular(20),
+                              child: Image(
+                                image: NetworkImage(i.toString()),
+                                fit: BoxFit.fill,
+                              ),
                             ),
                           );
                         },
@@ -108,11 +168,11 @@ class _AfterOpenState extends State<AfterOpen> {
                         borderRadius: BorderRadius.only(
                             topLeft: Radius.circular(25),
                             topRight: Radius.circular(25)),
-                        color: Color(0xff2C3333),
+                        color: Colors.black54,
                         //color: Colors.white,
                       ),
-                      margin: EdgeInsets.only(top: 230),
-                      height: 600 - 174,
+                      margin: EdgeInsets.only(top: 190),
+                      height: 600 - 134,
                       width: double.infinity,
                       child: Expanded(
                         child: Column(
@@ -120,15 +180,15 @@ class _AfterOpenState extends State<AfterOpen> {
                           children: <Widget>[
                             Expanded(
                               child: Container(
-                                margin: EdgeInsets.only(
+                                margin: const EdgeInsets.only(
                                   top: 10,
                                   left: 20,
                                 ),
                                 child: Text(
                                   widget.item_name,
-                                  style: TextStyle(
+                                  style: const TextStyle(
                                     color: Colors.white,
-                                    fontSize: 18,
+                                    fontSize: 24,
                                     fontFamily: 'Google',
                                     //backgroundColor: Colors.black54,
                                     letterSpacing: 1.8,
@@ -140,17 +200,19 @@ class _AfterOpenState extends State<AfterOpen> {
                               mainAxisAlignment: MainAxisAlignment.spaceAround,
                               children: <Widget>[
                                 simpleIconButton(FontAwesomeIcons.solidHeart,
-                                    Colors.black54, Color(0xff69DADB), () {
+                                    Colors.black, Color(0xfff1dfde), () {
+                                  addWishlist();
                                   print('this is the first name');
                                 }, 17),
                                 simpleIconButton(FontAwesomeIcons.phone,
-                                    Colors.black54, Color(0xff69DADB), () {
-                                  print('hello');
+                                    Colors.black, Color(0xffe6dff1), () {
+
+                                    _launchPhoneURL(myphoneNo);
                                 }, 17),
                               ],
                             ),
                             Container(
-                                margin: EdgeInsets.only(
+                                margin: const EdgeInsets.only(
                                     left: 18, top: 12, bottom: 8),
                                 child: const Text(
                                   '🍃 Overview',
@@ -169,17 +231,17 @@ class _AfterOpenState extends State<AfterOpen> {
                                 children: <Widget>[
                                   RowTile(
                                       FontAwesomeIcons.database,
-                                      'DETAILED DESCRIPTION\n\n   ' +
+                                      'DETAILED DESCRIPTION\n\n' +
                                           widget.out_longdesc),
                                   RowTile(FontAwesomeIcons.timeline,
-                                      'UTILITY\n\n   ' + widget.out_util),
+                                      'UTILITY\n\n' + widget.out_util),
                                   RowTile(
                                       FontAwesomeIcons.clock,
-                                      'USAGE/ CONDITION\n\n   ' +
+                                      'USAGE/ CONDITION\n\n' +
                                           widget.out_condition),
                                   RowTile(FontAwesomeIcons.tags,
-                                      'TAGS\n\n   ' + widget.out_tags),
-                                  SizedBox(
+                                      'TAGS\n\n' + widget.out_tags),
+                                  const SizedBox(
                                     height: 80,
                                   ),
                                 ],

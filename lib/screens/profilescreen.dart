@@ -10,6 +10,7 @@ import 'package:rucksack/screens/profile/broughtlist.dart';
 import 'package:rucksack/screens/profile/saleslist.dart';
 import 'package:rucksack/screens/profile/update.dart';
 
+
 class Profile extends StatefulWidget {
   static String id = 'profile';
   // ignore: use_key_in_widget_constructors
@@ -122,11 +123,11 @@ class _ProfileState extends State<Profile> {
             //   Navigator.pushNamed(context, MyOrder.id);
             // }),
             ProfilePagetile('WISHLIST', 'check wishlisted products',
-                Icons.heart_broken, printhello),
-            ProfilePagetile('ADD ITEM', 'start earning 💸', Icons.comment, () {
+                Icons.heart_broken, (){print('macho');}),
+            ProfilePagetile('ADD ITEM', 'start earning 💸', Icons.photo_size_select_large, () {
               Navigator.pushNamed(context, AddItem.id);
             }),
-            ProfilePagetile('ABOUT US', 'developers', Icons.comment, () {
+            ProfilePagetile('ABOUT US', 'developers', Icons.people, () {
               Navigator.pushNamed(context, AddItem.id);
             }),
             SizedBox(
