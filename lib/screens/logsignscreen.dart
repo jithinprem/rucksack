@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:rucksack/color/colors.dart';
 import 'package:toast/toast.dart';
 import 'emailverify.dart';
@@ -41,8 +42,8 @@ class _LogSignScreenState extends State<LogSignScreen> {
             appBar: AppBar(
               backgroundColor: Colors.black87,
               shadowColor: Colors.lime,
-              leading: Icon(Icons.shopping_cart),
-              title: Text('log in/ sign up', style: TextStyle(fontFamily: 'ZillaSlab', fontSize: 25),),
+              leading: Icon(FontAwesomeIcons.cartShopping),
+              title: Text('log in /sign up', style: TextStyle(fontFamily: 'Google', fontSize: 25),),
             ),
             body: ModalProgressHUD(
               inAsyncCall: showSpinner,
@@ -50,10 +51,13 @@ class _LogSignScreenState extends State<LogSignScreen> {
                 margin: EdgeInsets.only(top: 40),
                 child: Column(
                   children: <Widget>[
-                    CircleAvatar(
-                      child: Image.asset('images/Rucksack1.png'),
-                      radius: 70,
-                      backgroundColor: Colors.blueGrey[900],
+                    ClipRRect(
+                      borderRadius: BorderRadius.circular(300),
+                      child: CircleAvatar(
+                        child: Image.asset('images/ourlogo.gif'),
+                        radius: 70,
+                        backgroundColor: Colors.blueGrey[900],
+                      ),
                     ),
                     Padding(
                       padding: const EdgeInsets.all(6.0),

@@ -35,10 +35,13 @@ class _LoginScreenState extends State<LoginScreen> {
                       child: Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: <Widget>[
-                          CircleAvatar(
-                            child: Image.asset('images/Rucksack1.png'),
-                            radius: 50,
-                            backgroundColor: Colors.blueGrey[900],
+                          ClipRRect(
+                            borderRadius: BorderRadius.circular(300),
+                            child: CircleAvatar(
+                              child: Image.asset('images/ourlogo.gif'),
+                              radius: 50,
+                              backgroundColor: Colors.blueGrey[900],
+                            ),
                           ),
                           const SizedBox(
                             height: 10,
