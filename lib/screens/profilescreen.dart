@@ -1,6 +1,7 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:rucksack/color/colors.dart';
 import 'package:rucksack/screens/additem.dart';
 import 'package:rucksack/screens/homescreen.dart';
@@ -124,7 +125,7 @@ class _ProfileState extends State<Profile> {
             //   Navigator.pushNamed(context, MyOrder.id);
             // }),
             ProfilePagetile('WISHLIST', 'check wishlisted products',
-                Icons.heart_broken, (){Navigator.pushNamed(context, WishList.id);}),
+                FontAwesomeIcons.solidHeart, (){Navigator.pushNamed(context, WishList.id);}),
             ProfilePagetile('ADD ITEM', 'start earning 💸', Icons.photo_size_select_large, () {
               Navigator.pushNamed(context, AddItem.id);
             }),

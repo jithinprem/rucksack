@@ -3,16 +3,14 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
-import 'package:rucksack/color/colors.dart';
-import 'package:rucksack/mywidget/homecard.dart';
-import 'package:rucksack/mywidget/myiconbutton/myiconbutton.dart';
 import 'package:rucksack/screens/homescreen.dart';
-import 'package:rucksack/screens/profile/saleslist.dart';
 import 'package:url_launcher/url_launcher.dart';
 
-var todelstr =
-    'While it may not be obvious to everyone, there are a number of reasons creating random paragraphs can be useful.'
-    ' A few examples of how some people use this generator are listed in the ing paragraphs.';
+Color iccol = Colors.black87;
+bool click = false;
+FirebaseAuth _auth = FirebaseAuth.instance;
+FirebaseFirestore _firestore = FirebaseFirestore.instance;
+String? currUsername = _auth.currentUser?.email.toString();
 
 class AfterOpen extends StatefulWidget {
   var out_tags;
@@ -24,15 +22,9 @@ class AfterOpen extends StatefulWidget {
   String out_documentid;
   List<String> out_imgs = [];
 
-  //const AfterOpen({Key? key}) : super(key: key);
-  // {
-  //   /*{this.selectedItem}*/
-  //   // print('\n\n\n this is what we are doing\n\n\n');
-  //   // print(this.selectedItem);
-  //   // allimgs = selectedItem!['item_image'];
-  // }
   AfterOpen(this.item_name, this.out_longdesc, this.out_tags,
-      this.out_condition, this.out_util, this.out_userid, this.out_imgs, this.out_documentid) {}
+      this.out_condition, this.out_util, this.out_userid, this.out_imgs, this.out_documentid) {
+  }
   static String id = 'afterOpen';
 
   @override
@@ -41,12 +33,23 @@ class AfterOpen extends StatefulWidget {
 
 class _AfterOpenState extends State<AfterOpen> {
 
-  void initState(){
-    getPhoneNumber(widget.out_userid);
-  }
-
   String myphoneNo = 'xxxxxxxxx';
 
+  callgetCurrWish() async{
+    await getCurrentWishStatus();
+  }
+
+
+ // retrive phone number
+  void initState(){
+    print('this start');
+    callgetCurrWish();
+    print('this ends');
+    getPhoneNumber(widget.out_userid);
+    super.initState();
+  }
+
+  // for phone number dial pad
   _launchPhoneURL(String phoneNumber) async {
     String number = phoneNumber;
     if (await canLaunchUrl(
@@ -73,39 +76,52 @@ class _AfterOpenState extends State<AfterOpen> {
   }
 
   addWishlist(){
-    FirebaseAuth _auth = FirebaseAuth.instance;
-    FirebaseFirestore _firestore = FirebaseFirestore.instance;
-    String? currUsername = _auth.currentUser?.email.toString();
-    print(currUsername);
     _firestore.collection("profile").doc(currUsername).update(
       {
         'witem' : FieldValue.arrayUnion([widget.out_documentid])
       }
     ).then((_) => print('hellomywish'));
-    // where(
-    //   'uid',
-    //   isEqualTo: _auth.currentUser?.uid.toString(),
-    // ).add();
 
+  }
+  removeWishlist(){
+    _firestore.collection("profile").doc(currUsername).update(
+        {
+          'witem' : FieldValue.arrayRemove([widget.out_documentid])
+        }
+    ).then((_) => print('hellomywish'));
+  }
+
+  getCurrentWishStatus() async{
+    var snapshot =  await _firestore.collection("profile").doc(currUsername).get();
+    var itemList = await snapshot.data()!['witem'] as List;
+    print(snapshot);
+    if(itemList.contains(widget.out_documentid)){
+      setState((){
+        click = true;
+        iccol = Colors.red;
+        print("check color");
+      });
+    }else{
+      setState((){
+        click = false;
+        iccol = Colors.black87;
+        print("check color false");
+      });
+    }
   }
 
 
   @override
   Widget build(BuildContext context) {
 
+
     return WillPopScope(
       onWillPop: () async {
-        print("the back button was pressed");
-        // Navigator.push(
-        //     context,
-        //     MaterialPageRoute(
-        //         builder: (context) => HomeScreen())
-        // );
         Navigator.pop(context);
         return true;
       },
       child: MaterialApp(
-        theme: ThemeData.dark().copyWith(scaffoldBackgroundColor: Color(0xff2a2a2a)),
+        theme: ThemeData.dark().copyWith(scaffoldBackgroundColor: const Color(0xff2a2a2a)),
         home: SafeArea(
             child: Scaffold(
           appBar: AppBar(
@@ -120,7 +136,7 @@ class _AfterOpenState extends State<AfterOpen> {
             ),
             backgroundColor: Colors.black87,
             leading: IconButton(
-              icon: Icon(Icons.arrow_back),
+              icon: const Icon(Icons.arrow_back),
               onPressed: () {
                 Navigator.push(
                     context,
@@ -141,13 +157,12 @@ class _AfterOpenState extends State<AfterOpen> {
                         autoPlay: false,
                         aspectRatio: 23 / 9),
                     items: widget.out_imgs.map((i) {
-                      print("\nwidget is here rio" + i + "\n");
                       return Builder(
                         builder: (BuildContext context) {
                           return Container(
                             width: MediaQuery.of(context).size.width + 80,
-                            margin: EdgeInsets.symmetric(horizontal: 5.0),
-                            decoration: BoxDecoration(
+                            margin: const EdgeInsets.symmetric(horizontal: 5.0),
+                            decoration: const BoxDecoration(
                               color: Colors.black12,
                             ),
                             child: ClipRRect(
@@ -169,9 +184,8 @@ class _AfterOpenState extends State<AfterOpen> {
                             topLeft: Radius.circular(25),
                             topRight: Radius.circular(25)),
                         color: Colors.black54,
-                        //color: Colors.white,
                       ),
-                      margin: EdgeInsets.only(top: 190),
+                      margin: const EdgeInsets.only(top: 190),
                       height: 600 - 134,
                       width: double.infinity,
                       child: Expanded(
@@ -200,12 +214,28 @@ class _AfterOpenState extends State<AfterOpen> {
                               mainAxisAlignment: MainAxisAlignment.spaceAround,
                               children: <Widget>[
                                 simpleIconButton(FontAwesomeIcons.solidHeart,
-                                    Colors.black, Color(0xfff1dfde), () {
-                                  addWishlist();
+                                    iccol, const Color(0xfff1dfde), () {
+                                  click = click==true ? false : true;
+                                  if(click){
+                                    setState((){
+                                      addWishlist();
+                                      iccol = Colors.red;
+                                      print("state changed $iccol");
+
+                                    });
+                                  }else{
+                                    setState((){
+                                      removeWishlist();
+                                      iccol = Colors.black87;
+                                      print("state changed $iccol");
+
+                                    });
+                                  }
+
                                   print('this is the first name');
                                 }, 17),
                                 simpleIconButton(FontAwesomeIcons.phone,
-                                    Colors.black, Color(0xffe6dff1), () {
+                                    Colors.black, const Color(0xffe6dff1), () {
 
                                     _launchPhoneURL(myphoneNo);
                                 }, 17),
@@ -223,11 +253,10 @@ class _AfterOpenState extends State<AfterOpen> {
                                       color: Colors.white54,
                                       letterSpacing: 1.3),
                                 )),
-                            Container(
+                            SizedBox(
                               height: MediaQuery.of(context).size.height - 481,
                               width: MediaQuery.of(context).size.width,
                               child: ListView(
-                                //myitemselected['description'].toString()
                                 children: <Widget>[
                                   RowTile(
                                       FontAwesomeIcons.database,
@@ -292,6 +321,34 @@ class RowTile extends StatelessWidget {
           ),
         ),
       ],
+    );
+  }
+}
+
+
+class simpleIconButton extends StatelessWidget {
+  var iconColor;
+  var boxColor;
+  var onpressedfunc;
+  var boxicon;
+  var size;
+  simpleIconButton(this.boxicon, this.iconColor, this.boxColor, this.onpressedfunc, this.size){
+    this.size = this.size*1.0;
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return TextButton(
+        child: Container(
+          height: 85,
+          width: 85,
+          decoration: BoxDecoration(
+            borderRadius: BorderRadius.all(Radius.circular(30)),
+            color: boxColor,
+          ),
+          child: boxicon == FontAwesomeIcons.solidHeart ? Icon(boxicon, color: iccol, size: size,):  Icon(boxicon, color: Colors.black87, size: size,)
+        ),
+        onPressed: onpressedfunc
     );
   }
 }

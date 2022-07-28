@@ -182,6 +182,7 @@ class _AddItemState extends State<AddItem> {
         'userid': currUser!.uid,
         'item_image': dfiles,
         'profile_pic': profilePicUrl,
+        'time' : FieldValue.serverTimestamp(),
       });
       Navigator.pop(context);
     }
