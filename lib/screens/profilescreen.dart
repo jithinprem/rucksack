@@ -9,6 +9,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:rucksack/screens/profile/broughtlist.dart';
 import 'package:rucksack/screens/profile/saleslist.dart';
 import 'package:rucksack/screens/profile/update.dart';
+import 'package:rucksack/screens/profile/wishlist.dart';
 
 
 class Profile extends StatefulWidget {
@@ -123,7 +124,7 @@ class _ProfileState extends State<Profile> {
             //   Navigator.pushNamed(context, MyOrder.id);
             // }),
             ProfilePagetile('WISHLIST', 'check wishlisted products',
-                Icons.heart_broken, (){print('macho');}),
+                Icons.heart_broken, (){Navigator.pushNamed(context, WishList.id);}),
             ProfilePagetile('ADD ITEM', 'start earning 💸', Icons.photo_size_select_large, () {
               Navigator.pushNamed(context, AddItem.id);
             }),

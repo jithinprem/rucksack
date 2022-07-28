@@ -1,18 +1,47 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:rucksack/screens/additem.dart';
 
 import '../../mywidget/homecard.dart';
 import '../homescreen.dart';
 
 
 class WishList extends StatefulWidget {
-  const WishList({Key? key}) : super(key: key);
+  static String id = 'wishlist';
+  String? wishlistemail;
+  WishList(){
+    FirebaseAuth _auth = FirebaseAuth.instance;
+     wishlistemail = _auth.currentUser?.email.toString();
+  }
 
   @override
   State<WishList> createState() => _WishListState();
 }
 
 class _WishListState extends State<WishList> {
+
+  callfunc()async{
+    await getWishlistItems();
+  }
+
+  @override
+  void initState() {
+    // TODO: implement initState
+    callfunc();
+    super.initState();
+  }
+
+  var wishlistitems = [];
+  getWishlistItems() async{
+      FirebaseFirestore _firebase = FirebaseFirestore.instance;
+      var result = await _firebase.collection('profile').doc(widget.wishlistemail).get();
+      setState((){
+        wishlistitems = result.data()!['witem'] as List;
+      });
+      print(wishlistitems);
+  }
+
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
@@ -50,58 +79,33 @@ class _WishListState extends State<WishList> {
                     if (snapshot.hasData) {
                       List itemlistreq = [];
                       itemlistreq =
-                          snapshot.data!.docs.map((e) => e.data()).toList();
-
+                          snapshot.data!.docs.map((e) => {if(wishlistitems.contains(e.id))e.data()}).toList();
+                      print('beginning');
                       List<Widget> widgetlist = [];
-                      for (int i = 0; i < itemlistreq.length; i++) {
-                        String user_id = itemlistreq[i]['userid'].toString();
-                        //TODO: delete below line
-                        var u_id = " ";
-                        if (user_id == u_id) {
-                          String it_name = itemlistreq[i]['name'].toString();
-                          String it_desc =
-                          itemlistreq[i]['shortdesc'].toString();
-                          int k=0;
-                          List<String> items_images = [];
 
-                          for(String x in itemlistreq[i]['item_image']){
-                            items_images.add(x.toString());
-                          }
-                          String it_price =
-                          itemlistreq[i]['price'].toString();
-
-                          String circular_profileimg =
-                          itemlistreq[i]['profile_pic'].toString();
-                          print(user_id);
-                          String imgid = getImgData(user_id).toString();
-                          String longdesc =
-                          itemlistreq[i]['description'].toString();
-                          String utili =
-                          itemlistreq[i]['utilities'].toString();
-                          String tags = itemlistreq[i]['tags'].toString();
-                          String condition = itemlistreq[i]['condition'];
-                          if (imgid.isNotEmpty) {
-                            print('we are done here');
-                            widgetlist.add(
-                              HomeItemTile(
-                                it_name,
-                                it_desc,
-                                items_images[0],
-                                circular_profileimg,
-                                it_price,
-                                Icons.watch,
-                                longdesc,
-                                utili,
-                                tags,
-                                condition,
-                                user_id,
-                                items_images,
-                                'this is dummy string.. you should pass document id',
-                              ),
-                            );
-                          }
-                        }
-                      }
+                      itemlistreq[0].forEach((val) => {
+                                widgetlist.add(
+                                  HomeItemTile(
+                                    val['name'].toString(),
+                                    val['shortdesc'].toString(),
+                                    val['item_image'][0].toString(),
+                                    val['profile_pic'].toString(),
+                                    val['price'].toString(),
+                                    Icons.watch,
+                                    val['description'].toString(),
+                                    val['utilities'].toString(),
+                                    val['tags'].toString(),
+                                    val['condition'].toString(),
+                                    val['userid'].toString(),
+                                    val['item_images'].toString(),
+                                    'this is dummy string.. you should pass document id',
+                                  ),
+                                )
+                              // }
+                      });
+                      //     String user_id = itemlistreq[i]['userid'].toString();
+                      print("itemlisteq");
+                      print("length is "+ widgetlist.length.toString());
                       return Column(
                         children: widgetlist,
                       );

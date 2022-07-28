@@ -12,6 +12,7 @@ import 'package:rucksack/screens/profile/broughtlist.dart';
 import 'package:rucksack/screens/profile/logfirst.dart';
 import 'package:rucksack/screens/profile/saleslist.dart';
 import 'package:rucksack/screens/profile/update.dart';
+import 'package:rucksack/screens/profile/wishlist.dart';
 import 'package:rucksack/screens/profilescreen.dart';
 import 'package:rucksack/screens/additem.dart';
 
@@ -39,6 +40,7 @@ class _MyAppState extends State<MyApp> {
 
       routes: {
         //AfterOpen.id : (context) => AfterOpen(),
+        WishList.id : (context) => WishList(),
         RealLogin.id : (context) => RealLogin(),
         LoginScreen.id : (context) => LoginScreen(),
         UpImg.id : (context) => UpImg(),
