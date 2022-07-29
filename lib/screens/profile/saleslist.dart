@@ -92,6 +92,8 @@ class _SalesListState extends State<SalesList> {
                                 snapshot.data!.docs.map((e) => e.data()).toList();
 
                             List<Widget> widgetlist = [];
+                            var itemidlist = snapshot.data!.docs
+                                .map((e) => (e.id)).toList();
                             for (int i = 0; i < itemlistreq.length; i++) {
                               String user_id = itemlistreq[i]['userid'].toString();
                               if (user_id == u_id) {
@@ -133,7 +135,7 @@ class _SalesListState extends State<SalesList> {
                                       condition,
                                       user_id,
                                       items_images,
-                                      'this is dummy string.. you should pass document id',
+                                      itemidlist[i].toString(),
                                     ),
                                   );
                                 }

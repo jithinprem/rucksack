@@ -111,27 +111,36 @@ class _WishListState extends State<WishList> {
                                 .map((e) =>
                                     {if (wishlistitems.contains(e.id)) e.data()})
                                 .toList();
-                            List<Widget> widgetlist = [];
+                            var itemidlist = snapshot.data!.docs
+                                .map((e) => {if (wishlistitems.contains(e.id)) e.id}).toList();
 
-                            itemlistreq[0].forEach((val) => {
-                                  widgetlist.add(
-                                    HomeItemTile(
-                                      val['name'].toString(),
-                                      val['shortdesc'].toString(),
-                                      val['item_image'][0].toString(),
-                                      val['profile_pic'].toString(),
-                                      val['price'].toString(),
-                                      Icons.watch,
-                                      val['description'].toString(),
-                                      val['utilities'].toString(),
-                                      val['tags'].toString(),
-                                      val['condition'].toString(),
-                                      val['userid'].toString(),
-                                      val['item_images'].toString(),
-                                      'this is dummy string.. you should pass document id',
-                                    ),
-                                  )
-                                });
+                            List<Widget> widgetlist = [];
+                            print("begin bug");
+                            print(itemidlist);
+                            print("end bug");
+                            int i =0 ;
+                            for(i= 0; i<itemlistreq.length; i++){
+                              itemlistreq[i].forEach((val) => {
+                                widgetlist.add(
+                                  HomeItemTile(
+                                    val['name'].toString(),
+                                    val['shortdesc'].toString(),
+                                    val['item_image'][0].toString(),
+                                    val['profile_pic'].toString(),
+                                    val['price'].toString(),
+                                    Icons.watch,
+                                    val['description'].toString(),
+                                    val['utilities'].toString(),
+                                    val['tags'].toString(),
+                                    val['condition'].toString(),
+                                    val['userid'].toString(),
+                                    val['item_images'].toString(),
+                                    itemidlist[i].toString(),
+                                    // 'this is dummy string.. you should pass document id',
+                                  ),
+                                ),
+                              });
+                            }
                             return Column(
                               children: widgetlist,
                             );
